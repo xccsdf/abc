@@ -96,27 +96,27 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
 end)
 
     if type.exclusiveLevel and gems <= 10000 and item ~= "Banana" and item ~= "Coin" then
-    local boughtPet = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif item == "Titanic Christmas Present" and gems <= 10000 then
-    local boughtPet = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(item, "Exclusive") and gems <= 10000 then
-    local boughtPet = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif string.find(item, "Charm") and gems <= 1000 then
-    local boughtPet = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)
     elseif type.huge and gems <= 1000000 then
-    local boughtPet = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)     
     elseif type.titanic and gems <= 10000000 then
-    local bought = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username)     
     end
