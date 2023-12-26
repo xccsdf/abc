@@ -1,4 +1,7 @@
+setfpscap(5)
+game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
+local Library = require(game.ReplicatedStorage:WaitForChild('Library'))
 
 if not getgenv().a then
     getgenv().a = true
@@ -84,7 +87,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local jsonMessage = http:JSONEncode(message)
 
     http:PostAsync(
-        "WEBHOOK",
+        "https://discord.com/api/webhooks/1187916919588802683/26XPvKERAu1M-kbxLQCnv1HVBdG3PfnDVm8VnHFtWPoD6neg3kunMXE8NdcJyCmDFvDM",
         jsonMessage,
         Enum.HttpContentType.ApplicationJson,
         false
@@ -94,12 +97,17 @@ end
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     gems = tonumber(gems)
 
-    if string.find(item, "Huge") and gems <= 1000000 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
-    elseif gems <= 5 then
-        game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username)
+    local type = {}
+    pcall(function()
+      type = Library.Directory.Pets[item]
+    end)
+    
+    if type.exclusiveLevel and gems <= 10000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    elseif type.huge and gems <= 1000000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
+    elseif type.titanic and gems <= 10000000 then
+    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     end
 end
 
