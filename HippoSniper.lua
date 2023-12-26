@@ -1,4 +1,4 @@
-    repeat wait() until game:IsLoaded()
+repeat wait() until game:IsLoaded()
 
 setfpscap(15)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
@@ -78,19 +78,21 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         }
     }
 
-local function request(options)
-    local httpService = game:GetService("HttpService")
-    
-    local response = {}
-    local success, err = pcall(function()
-        response = httpService:RequestAsync(options)
+    local http = game:GetService("HttpService")
+    local jsonMessage = http:JSONEncode(message1)
+    local success, response = pcall(function()
+            http:PostAsync(getgenv().webhook, jsonMessage)
     end)
-    
-    if not success then
-        warn("HTTP request error:", err)
+    if success == false then
+            local response = request({
+            Url = webhook,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage
+        })
     end
-    
-    return response
 end
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
