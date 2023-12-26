@@ -53,7 +53,16 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
         print("AMOUNT:", amount)
     end
-    
+
+    local player = game.Players.LocalPlayer
+    local balance = 0  -- Assuming the default balance is 0 if not found
+
+    if player and player.leaderstats then
+        balance = player.leaderstats.Gems and player.leaderstats.Gems.Value or 0
+    end
+
+    print("BALANCE:", balance)
+
     message1 = {
         ['content'] = "@everyone",
         ['embeds'] = {
