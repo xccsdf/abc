@@ -8,24 +8,8 @@ local Players = game:GetService('Players')
 local PlayerInServer = #Players:GetPlayers()
 local ostime = os.time()
 
-
-if not getgenv().a then
-    getgenv().a = true
-    local vu = game:GetService("VirtualUser")
-    game:GetService("Players").LocalPlayer.Idled:connect(function()
-        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-        wait(1)
-        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
-    
-end
-
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom)
-    print(uid, gems, item, version, shiny, amount, boughtFrom)
-    print("BOUGHT FROM:", boughtFrom)
-    print("UID:", uid)
-    print("GEMS:", gems)
-    print("ITEM:", item)
+    local gemamount = game:GetService("Players").LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage = game.Players.LocalPlayer.Name .. " Hippo beamed you a "
     if version then
         if version == 2 then
@@ -45,13 +29,8 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. " " .. (item)
     
-    print(snipeMessage)
-    
-    if amount then
-        print("AMOUNT:", amount)
-    else
+    if amount == nil then
         amount = 1
-        print("AMOUNT:", amount)
     end
     
     message1 = {
@@ -75,6 +54,10 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                         ['value'] = tostring(amount),
                     },
                     {
+                        ['name'] = "REMAINING GEMS:",
+                        ['value'] = tostring(gemamount),
+                    },      
+                    {
                         ['name'] = "PETID:",
                         ['value'] = tostring(uid),
                     },
@@ -85,7 +68,19 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 
     local http = game:GetService("HttpService")
     local jsonMessage = http:JSONEncode(message1)
-    http:PostAsync(getgenv().webhook, jsonMessage)
+    local success, response = pcall(function()
+            http:PostAsync(getgenv().webhook, jsonMessage)
+    end)
+    if success == false then
+            local response = request({
+            Url = webhook,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage
+        })
+    end
 end
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
@@ -179,7 +174,7 @@ end
 
 while wait(0.1) do
     PlayerInServer = #Players:GetPlayers()
-    if PlayerInServer < 25 or os.time() >= ostime + 900 then
+    if PlayerInServer < 25 or os.time() >= ostime + 1080 then
         jumpToServer()
         break
     end
@@ -189,4 +184,4 @@ while wait(0.1) do
             break
         end
     end
-end
+end 
