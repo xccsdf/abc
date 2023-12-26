@@ -26,7 +26,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     print("UID:", uid)
     print("GEMS:", gems)
     print("ITEM:", item)
-    local snipeMessage = game.Players.LocalPlayer.Name .. "Hippo beamed you a"
+    local snipeMessage = game.Players.LocalPlayer.Name .. " Hippo beamed you a "
     if version then
         if version == 2 then
             version = "Rainbow"
