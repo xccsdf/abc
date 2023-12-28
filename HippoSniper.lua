@@ -61,7 +61,10 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	local webcolor = tonumber(0xff0000)
 	local weburl = webhookFail
     end
-    
+
+local Image = string.split(petimg, "rblxassetid://")[2]
+Image = game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" .. Image .. "&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false")
+
 message1 = {
     ['content'] = "@everyone",
     ['embeds'] = {
@@ -88,6 +91,9 @@ message1 = {
                                 "||Pet ID: " .. tostring(uid) .. "||",
                     ['inline'] = true,
                 },
+            },
+            ['image'] = {
+                ['url'] = Image
             },
         },
     }
