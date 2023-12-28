@@ -62,33 +62,31 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	local weburl = webhookFail
     end
     
-    local message1 = {
+    message1 = {
         ['content'] = "@everyone",
         ['embeds'] = {
             {
                 ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
+                ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ"),
+                ["color"] = 15719358,
+                ["author"] = {
+                    ["name"] = "Reimu",
+                    ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+                },
                 ['fields'] = {
                     {
-                        ['name'] = "PRICE:",
-                        ['value'] = tostring(gems) .. " GEMS",
+                        ['name'] = "PURCHASE INFO",
+                        ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
+                                    "Amount: " .. tostring(amount) .. "\n" ..
+                                    "Bought from: " .. tostring(boughtFrom) .. "\n" ..
+                                    "Pet ID: " .. tostring(uid),
+                        ['inline'] = true,
                     },
                     {
-                        ['name'] = "BOUGHT FROM:",
-                        ['value'] = tostring(boughtFrom),
-                    },
-                    {
-                        ['name'] = "AMOUNT:",
-                        ['value'] = tostring(amount),
-                    },
-                    {
-                        ['name'] = "REMAINING GEMS:",
-                        ['value'] = tostring(gemamount),
-                    },      
-                    {
-                        ['name'] = "PETID:",
-                        ['value'] = tostring(uid),
+                        ['name'] = "USER INFO",
+                        ['value'] = "User: " .. game.Players.LocalPlayer.Name .. "\n" ..
+                                    "Remaining Gems: " .. tostring(gemamount),
+                        ['inline'] = true,
                     },
                 },
             },
