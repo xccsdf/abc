@@ -1,6 +1,6 @@
 repeat wait() until game:IsLoaded()
 
-setfpscap(10)
+setfpscap(5)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local message1 = {}
