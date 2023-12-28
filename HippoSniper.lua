@@ -67,7 +67,7 @@ message1 = {
     embeds = {
         {
             title = snipeMessage,
-            timestamp = os.date("!%Y-%m-%dT%H:%M:%S%z"),  -- Ensure correct timestamp format
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%S%z"),
             color = 15719358,
             author = {
                 name = "Reimu",
