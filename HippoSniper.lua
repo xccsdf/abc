@@ -155,6 +155,7 @@ elseif type.huge and gems <= 1000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+	task.wait(20)
 	game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Mailbox: Send"):InvokeServer(getgenv().mailuser, "abc", "Pet", tostring(uid), 1)
 	end
     elseif type.titanic and gems <= 10000000 then
