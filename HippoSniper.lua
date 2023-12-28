@@ -75,7 +75,8 @@ message1 = {
             },
             fields = {
                 {
-                    name = "PURCHASE INFO \n\n",
+                    name = "PURCHASE INFO:",
+                    value = "\n\n",
                 },
                 {
                     name = "PRICE:",
@@ -91,10 +92,11 @@ message1 = {
                 },
                 {
                     name = "PETID:",
-                    value = "||" .. tostring(uid) .. "|| \n",
+                    value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
-                    name = "USER INFO \n\n",
+                    name = "USER INFO:",
+                    value = "\n\n",
                 },
                 {
                     name = "USER:",
