@@ -31,7 +31,7 @@ end
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage = Players.LocalPlayer.Name .. " Hippo Sniped You a "
+    local snipeMessage = " You Sniped a "
     if version then
         if version == 2 then
             version = "Rainbow"
@@ -75,18 +75,34 @@ message1 = {
             },
             ['fields'] = {
                 {
-                    ['name'] = "USER INFO",
-                    ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
-                                "Remaining Gems: " .. tostring(gemamount) .. "",
-                    ['inline'] = true,
+                    ['name'] = "PURCHASE INFO \n\n",
                 },
                 {
-                    ['name'] = "PURCHASE INFO",
-                    ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
-                                "Amount: " .. tostring(amount) .. "\n" ..
-                                "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
-                                "||Pet ID: " .. tostring(uid) .. "||",
-                    ['inline'] = true,
+                    ['name'] = "PRICE:",
+                    ['value'] = tostring(gems) .. " GEMS",
+                },
+                {
+                    ['name'] = "AMOUNT:",
+                    ['value'] = tostring(amount),
+                },
+                {
+                    ['name'] = "BOUGHT FROM:",
+                    ['value'] = "||" .. tostring(boughtFrom) .. "||",
+                },
+                {
+                    ['name'] = "PETID:",
+                    ['value'] = "||" .. tostring(uid) .. "|| \n",
+                },
+                {
+                    ['name'] = "USER INFO \n\n",
+                },
+		{
+                    ['name'] = "USER:",
+                    ['value'] = "||" .. game.Players.LocalPlayer.Name .. "||",
+                },
+                {
+                    ['name'] = "GEMS:",
+                    ['value'] = tostring(gemamount),
                 },
             },
         },
