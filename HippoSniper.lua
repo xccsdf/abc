@@ -75,17 +75,17 @@ message1 = {
             },
             ['fields'] = {
                 {
-                    ['name'] = "PURCHASE INFO",
-                    ['value'] = "||Price: " .. tostring(gems) .. " GEMS||\n" ..
-                                "||Amount: " .. tostring(amount) .. "||\n" ..
-                                "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
-                                "||Pet ID: " .. tostring(uid) .. "||",
+                    ['name'] = "USER INFO",
+                    ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
+                                "Remaining Gems: " .. tostring(gemamount) .. "||",
                     ['inline'] = true,
                 },
                 {
-                    ['name'] = "USER INFO",
-                    ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
-                                "||Remaining Gems: " .. tostring(gemamount) .. "||",
+                    ['name'] = "PURCHASE INFO",
+                    ['value'] = "Price: " .. tostring(gems) .. " GEMS||\n" ..
+                                "Amount: " .. tostring(amount) .. "||\n" ..
+                                "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
+                                "||Pet ID: " .. tostring(uid) .. "||",
                     ['inline'] = true,
                 },
             },
