@@ -77,13 +77,13 @@ message1 = {
                 {
                     ['name'] = "USER INFO",
                     ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
-                                "Remaining Gems: " .. tostring(gemamount) .. "||",
+                                "Remaining Gems: " .. tostring(gemamount) .. "",
                     ['inline'] = true,
                 },
                 {
                     ['name'] = "PURCHASE INFO",
-                    ['value'] = "Price: " .. tostring(gems) .. " GEMS||\n" ..
-                                "Amount: " .. tostring(amount) .. "||\n" ..
+                    ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
+                                "Amount: " .. tostring(amount) .. "\n" ..
                                 "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
                                 "||Pet ID: " .. tostring(uid) .. "||",
                     ['inline'] = true,
