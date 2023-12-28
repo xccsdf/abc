@@ -37,11 +37,9 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
             version = "Rainbow"
         elseif version == 1 then
             version = "Golden"
-        else
-            version = "Normal"
         end
     else
-        version = "Normal"
+       version = "Normal"
     end
     
     snipeMessage = snipeMessage .. version
@@ -56,53 +54,44 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         amount = 1
     end
 
-    local Image = string.split(petimg, "rblxassetid://")[2]
-    Image = game:HttpGet("https://thumbnails.roblox.com/v1/assets?assetIds=" .. Image .. "&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false")
-
-    local webcolor
-    local weburl
-
-    if boughtStatus then
-        webcolor = tonumber(0x33dd99)
-        weburl = webhook
+    if boughtPet == true then
+	local webcolor = tonumber(0x33dd99)
+	local weburl = webhook
     else
-        webcolor = tonumber(0xff0000)
-        weburl = webhookFail
+	local webcolor = tonumber(0xff0000)
+	local weburl = webhookFail
     end
-
-    local message1 = {
-        ['content'] = "@everyone",
-        ['embeds'] = {
-            {
-                ['title'] = snipeMessage,
-                ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ"),
-                ["color"] = webcolor,
-                ["author"] = {
-                    ["name"] = "Reimu",
-                    ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+    
+message1 = {
+    ['content'] = "@everyone",
+    ['embeds'] = {
+        {
+            ['title'] = snipeMessage,
+            ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ"),
+            ["color"] = 15719358,
+            ["author"] = {
+                ["name"] = "Reimu",
+                ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+            },
+            ['fields'] = {
+                {
+                    ['name'] = "USER INFO",
+                    ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
+                                "Remaining Gems: " .. tostring(gemamount) .. "",
+                    ['inline'] = true,
                 },
-                ['fields'] = {
-                    {
-                        ['name'] = "USER INFO",
-                        ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
-                                    "Remaining Gems: " .. tostring(gemamount) .. "",
-                        ['inline'] = true,
-                    },
-                    {
-                        ['name'] = "PURCHASE INFO",
-                        ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
-                                    "Amount: " .. tostring(amount) .. "\n" ..
-                                    "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
-                                    "||Pet ID: " .. tostring(uid) .. "||",
-                        ['inline'] = true,
-                    },
-                },
-                ['image'] = {
-                    ['url'] = Image
+                {
+                    ['name'] = "PURCHASE INFO",
+                    ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
+                                "Amount: " .. tostring(amount) .. "\n" ..
+                                "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
+                                "||Pet ID: " .. tostring(uid) .. "||",
+                    ['inline'] = true,
                 },
             },
-        }
+        },
     }
+}
 
     local jsonMessage = http:JSONEncode(message1)
     local success, response = pcall(function()
