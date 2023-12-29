@@ -67,7 +67,7 @@ message1 = {
     embeds = {
         {
             title = snipeMessage,
-            timestamp = os.date("!%Y-%m-%dT%H:%M:%S%z"),  -- Ensure correct timestamp format
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%S%z"),
             color = 15719358,
             author = {
                 name = "Reimu",
@@ -75,8 +75,8 @@ message1 = {
             },
             fields = {
                 {
-                    name = "PURCHASE INFO",
-                    value = "\n",
+                    name = "PURCHASE INFO:",
+                    value = "\n\n",
                 },
                 {
                     name = "PRICE:",
@@ -92,11 +92,11 @@ message1 = {
                 },
                 {
                     name = "PETID:",
-                    value = "||" .. tostring(uid) .. "||",
+                    value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
-                    name = "USER INFO",
-                    value = "\n",
+                    name = "USER INFO:",
+                    value = "\n\n",
                 },
                 {
                     name = "USER:",
