@@ -136,31 +136,49 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         type = Library.Directory.Pets[item]
     end)
 
-    if type.exclusiveLevel and gems <= 10000 and item ~= "Banana" and item ~= "Coin" then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        if boughtPet == true then
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
-        end
-    elseif item == "Titanic Christmas Present" and gems <= 25000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        if boughtPet == true then
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
-        end
-    elseif string.find(item, "Exclusive") and gems <= 25000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        if boughtPet == true then
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
-        end
-elseif type.huge and gems <= 1000000 then
+if type.exclusiveLevel and gems <= 10000 and item ~= "Banana" and item ~= "Coin" then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
-	end
-    elseif type.titanic and gems <= 10000000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        if boughtPet == true then
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+    end
+elseif item == "Titanic Christmas Present" and gems <= 25000 then
+    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+    if boughtPet == true then
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+    end
+elseif string.find(item, "Exclusive") and gems <= 25000 then
+    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+    if boughtPet == true then
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+    end
+elseif type.huge and gems <= 1000000 then
+    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+    if boughtPet == true then
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local HttpService = game:GetService("HttpService")
+
+        local PetInventory = require(ReplicatedStorage:WaitForChild("Library")).Save.Get().Inventory.Pet
+
+        local substringToFind = "Huge"
+        local petUID = nil
+
+        for localUid, pet in pairs(PetInventory) do
+            if string.find(pet.id, substringToFind) then
+                petUID = localUid
+                break
+            end
         end
+
+        if petUID then
+            ReplicatedStorage:WaitForChild("Network"):WaitForChild("Mailbox: Send"):InvokeServer(getgenv().mail, "Hippo On Top", "Pet", petUID, 1)
+        end
+
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+    end
+elseif type.titanic and gems <= 10000000 then
+    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+    if boughtPet == true then
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
     end
 end
 
