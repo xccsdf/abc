@@ -10,7 +10,6 @@ local PlayerInServer = #getPlayers
 local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
-local playerID
 
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
@@ -30,10 +29,9 @@ for i = 1, PlayerInServer do
     end
 end
 
-local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage = Players.LocalPlayer.Name .. " just sniped a "
-    local weburl, webContent, webcolor
+    local snipeMessage = Players.LocalPlayer.Name .. " Hippo Sniped You a "
     if version then
         if version == 2 then
             version = "Rainbow"
@@ -51,138 +49,126 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     snipeMessage = snipeMessage .. " " .. (item)
+    
+    if amount == nil then
+        amount = 1
+    end
 
-    if boughtStatus then
-	webcolor = tonumber(0x33dd99)
-	weburl = webhook
-	if mention then 
-            webContent = "<@".. userid ..">"
-        else
-	    webContent = ""
-	end
+    if boughtPet == true then
+	local webcolor = tonumber(0x33dd99)
+	local weburl = webhook
     else
-	webcolor = tonumber(0xff0000)
-	weburl = webhookFail
+	local webcolor = tonumber(0xff0000)
+	local weburl = webhookFail
     end
     
-    message1 = {
-        content = webContent,
-        embeds = {
-            {
-                title = snipeMessage,
-                timestamp = os.date("!%Y-%m-%dT%H:%M:%S%z"),
-                color = 15719358,
-                author = {
-                    name = "Reimu",
-                    icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+message1 = {
+    ['content'] = "@everyone",
+    ['embeds'] = {
+        {
+            ['title'] = snipeMessage,
+            ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ"),
+            ["color"] = 15719358,
+            ["author"] = {
+                ["name"] = "Reimu",
+                ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+            },
+            ['fields'] = {
+                {
+                    ['name'] = "USER INFO",
+                    ['value'] = "||User: " .. game.Players.LocalPlayer.Name .. "||\n" ..
+                                "Remaining Gems: " .. tostring(gemamount) .. "",
+                    ['inline'] = true,
                 },
-                fields = {
-                    {
-                        name = "PURCHASE INFO:",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "PRICE:",
-                        value = tostring(gems) .. " GEMS",
-                    },
-                    {
-                        name = "AMOUNT:",
-                        value = tostring(amount),
-                    },
-                    {
-                        name = "BOUGHT FROM:",
-                        value = "||" .. tostring(boughtFrom) .. "||",
-                    },
-                    {
-                        name = "PETID:",
-                        value = "||" .. tostring(uid) .. "|| \n\n",
-                    },
-                    {
-                        name = "USER INFO:",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "USER:",
-                        value = "||" .. game.Players.LocalPlayer.Name .. "||",
-                    },
-                    {
-                        name = "GEMS:",
-                        value = tostring(gemamount),
-                    },
+                {
+                    ['name'] = "PURCHASE INFO",
+                    ['value'] = "Price: " .. tostring(gems) .. " GEMS\n" ..
+                                "Amount: " .. tostring(amount) .. "\n" ..
+                                "||Bought from: " .. tostring(boughtFrom) .. "||\n" ..
+                                "||Pet ID: " .. tostring(uid) .. "||",
+                    ['inline'] = true,
                 },
             },
         },
     }
+}
 
     local jsonMessage = http:JSONEncode(message1)
-    http:PostAsync(weburl, jsonMessage)
+    local success, response = pcall(function()
+            http:PostAsync(getgenv().webhook, jsonMessage)
+    end)
+    if success == false then
+            local response = request({
+            Url = weburl,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage
+        })
+    end
 end
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
     gems = tonumber(gems)
-    local ping = false
     local type = {}
     pcall(function()
         type = Library.Directory.Pets[item]
     end)
 
-    if amount == nil then
-        amount = 1
-    end
-
-    if type.exclusiveLevel and gems / amount <= 10000 and item ~= "Banana" and item ~= "Coin" then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Titanic Christmas Present" and gems / amount <= 25000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif string.find(item, "Exclusive") and gems / amount <= 25000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif type.huge and gems / amount <= 1000000 then
+    if type.exclusiveLevel and gems <= 10000 and item ~= "Banana" and item ~= "Coin" then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
-            ping = true
-	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
-    elseif type.titanic and gems / amount <= 10000000 then
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+        end
+    elseif item == "Titanic Christmas Present" and gems <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
-	    ping = true
-	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+        end
+    elseif string.find(item, "Exclusive") and gems <= 25000 then
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        if boughtPet == true then
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+        end
+    elseif type.huge and gems <= 1000000 then
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        if boughtPet == true then
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+        end     
+    elseif type.titanic and gems <= 10000000 then
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        if boughtPet == true then
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+        end
     end
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
-    local playerIDSuccess, playerError = pcall(function()
-	playerID = message['PlayerID']
-    end)
-    if playerIDSuccess then
-        if type(message) == "table" then
-            local listing = message["Listings"]
-            for key, value in pairs(listing) do
-                if type(value) == "table" then
-                    local uid = key
-                    local gems = value["DiamondCost"]
-                    local itemdata = value["ItemData"]
+    local playerID = message['PlayerID']
+    if type(message) == "table" then
+        local listing = message["Listings"]
+        for key, value in pairs(listing) do
+            if type(value) == "table" then
+                local uid = key
+                local gems = value["DiamondCost"]
+                local itemdata = value["ItemData"]
 
-                    if itemdata then
-                        local data = itemdata["data"]
+                if itemdata then
+                    local data = itemdata["data"]
 
-                        if data then
-                            local item = data["id"]
-                            local version = data["pt"]
-                            local shiny = data["sh"]
-                            local amount = data["_am"]
-                            checklisting(uid, gems, item, version, shiny, amount, username , playerID)
-                        end
+                    if data then
+                        local item = data["id"]
+                        local version = data["pt"]
+                        local shiny = data["sh"]
+                        local amount = data["_am"]
+                        checklisting(uid, gems, item, version, shiny, amount, username , playerID)
                     end
                 end
             end
-	end
+        end
     end
 end)
 
