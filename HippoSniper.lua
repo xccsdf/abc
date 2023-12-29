@@ -15,9 +15,13 @@ local playerID
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-   task.wait(1)
+   wait(1)
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
+
+local function request(options)
+    return game:GetService("HttpService"):RequestAsync(options)
+end
 
 for i = 1, PlayerInServer do
    if getPlayers[i] ~= Players.LocalPlayer and getPlayers[i].Character then
