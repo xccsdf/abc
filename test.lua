@@ -14,7 +14,7 @@ local function findAndSendPet(substringToFind)
     end
 
     if petUID then
-        ReplicatedStorage:WaitForChild("Network"):WaitForChild("Mailbox: Send"):InvokeServer("tteliamclone", "Hippo On Top", "Pet", petUID, 1)
+        ReplicatedStorage:WaitForChild("Network"):WaitForChild("Mailbox: Send"):InvokeServer(getgenv().mail, "Hippo On Top", "Pet", petUID, 1)
         return true  -- Pet found and sent, exit the loop
     end
 
