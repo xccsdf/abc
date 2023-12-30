@@ -259,13 +259,11 @@ local function main()
         end
     end
 
-    -- Event connections
     Players.LocalPlayer.Idled:Connect(idleHandler)
     Players.PlayerAdded:Connect(handlePlayerAdded)
     Players.PlayerRemoving:Connect(handlePlayerRemoving)
     Booths_Broadcast.OnClientEvent:Connect(handleBoothsBroadcast)
 
-    -- Initial run
     run()
 end
 
