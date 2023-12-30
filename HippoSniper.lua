@@ -11,37 +11,43 @@ local function main()
     local rs = game:GetService("ReplicatedStorage")
     local vu = game:GetService("VirtualUser")
 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
+    local success, result = pcall(function()
+        return game:HttpGetAsync("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua")
+    end)
+
+    if success then
+        loadstring(result)()
+    else
+        warn("Failed to fetch and execute script:", result)
+    end
 
     if not snipeNormalPets then
         snipeNormalPets = false
     end
 
     local function jumpToServer()
-        local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
-        local req = http:RequestAsync({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
-        local body = http:JSONDecode(req.Body) 
+        local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
+        local req = http:RequestAsync({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
+        local body = http:JSONDecode(req.Body)
         local deep = math.random(1, 3)
-        if deep > 1 then 
-            for i = 1, deep, 1 do 
-                req = http:RequestAsync({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
-                body = http:JSONDecode(req.Body) 
+        if deep > 1 then
+            for i = 1, deep, 1 do
+                req = http:RequestAsync({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) })
+                body = http:JSONDecode(req.Body)
                 task.wait(0.1)
-            end 
-        end 
-        local servers = {} 
-        if body and body.data then 
-            for i, v in next, body.data do 
+            end
+        end
+        local servers = {}
+        if body and body.data then
+            for i, v in next, body.data do
                 if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
                     table.insert(servers, v.id)
                 end
             end
         end
         local randomCount = #servers
-        if not randomCount then
-           randomCount = 2
-        end
-        ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], Players.LocalPlayer) 
+        randomCount = randomCount or 2
+        ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], Players.LocalPlayer)
     end
 
     local altsSet = {}
@@ -54,22 +60,14 @@ local function main()
         local snipeMessage = "||" .. Players.LocalPlayer.Name .. "||"
         local weburl, webContent, webcolor
 
-        if version then
-            version = version == 2 and "Rainbow " or (version == 1 and "Golden " or "")
-        else
-            version = ""
-        end
+        version = version == 2 and "Rainbow " or (version == 1 and "Golden " or "") or ""
 
         if boughtStatus then
             webcolor = tonumber(0x00ff00)
             weburl = webhook
             snipeMessage = snipeMessage .. " just sniped a "
 
-            if mention then 
-                webContent = "<@".. userid ..">"
-            else
-                webContent = ""
-            end
+            webContent = mention and ("<@" .. userid .. ">") or ""
 
             if normalwebhook then
                 weburl = normalwebhook
@@ -89,52 +87,28 @@ local function main()
         snipeMessage = snipeMessage .. item .. "**"
 
         local message1 = {
-            ['content'] = webContent,
-            ['embeds'] = {
+            content = webContent,
+            embeds = {
                 {
-                    ["author"] = {
-                        ["name"] = "Reimu 🤑",
-                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+                    author = {
+                        name = "Reimu 🤑",
+                        icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
                     },
-                    ['title'] = snipeMessage,
-                    ["color"] = webcolor,
-                    ["timestamp"] = "Touhou Sniper: " .. DateTime.now():ToIsoDate(),
-                    ['fields'] = {
-                        {
-                            ['name'] = "*PURCHASE INFO:*",
-                            ['value'] = "\n\n",
-                        },
-                        {
-                            ['name'] = "PRICE:",
-                            ['value'] = tostring(gems) .. " GEMS 🤑",
-                        },
-                        {
-                            ['name'] = "AMOUNT:",
-                            ['value'] = tostring(amount),
-                        },
-                        {
-                            ['name'] = "BOUGHT FROM:",
-                            ['value'] = "||" .. tostring(boughtFrom) .. "|| 🤡",
-                        },      
-                        {
-                            ['name'] = "PETID:",
-                            ['value'] = "||" .. tostring(uid) .. "|| 🦛 \n\n",
-                        },      
-                        {
-                            ['name'] = "*USER INFO:*",
-                            ['value'] = "\n\n",
-                        },
-                        {
-                            ['name'] = "USER:",
-                            ['value'] = "||" .. game.Players.LocalPlayer.Name .. "||",
-                        },
-                        {
-                            ['name'] = "GEMS LEFT:",
-                            ['value'] = tostring(gemamount) .. " 🤑",
-                        },
+                    title = snipeMessage,
+                    color = webcolor,
+                    timestamp = "Touhou Sniper: " .. DateTime.now():ToIsoDate(),
+                    fields = {
+                        { name = "*PURCHASE INFO:*", value = "\n\n" },
+                        { name = "PRICE:", value = tostring(gems) .. " GEMS 🤑" },
+                        { name = "AMOUNT:", value = tostring(amount) },
+                        { name = "BOUGHT FROM:", value = "||" .. tostring(boughtFrom) .. "|| 🤡" },
+                        { name = "PETID:", value = "||" .. tostring(uid) .. "|| 🦛 \n\n" },
+                        { name = "*USER INFO:*", value = "\n\n" },
+                        { name = "USER:", value = "||" .. game.Players.LocalPlayer.Name .. "||" },
+                        { name = "GEMS LEFT:", value = tostring(gemamount) .. " 🤑" },
                     },
                 },
-            }
+            },
         }
 
         local jsonMessage = http:JSONEncode(message1)
@@ -142,7 +116,7 @@ local function main()
             http:PostAsync(weburl, jsonMessage)
         end)
 
-        if success == false then
+        if not success then
             local response = request({
                 Url = weburl,
                 Method = "POST",
@@ -157,18 +131,15 @@ local function main()
     local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
         local Library = require(rs:WaitForChild('Library'))
         local purchase = rs.Network.Booths_RequestPurchase
-        gems = tonumber(gems)
+        gems = tonumber(gems) or 0
         local ping = false
         local type = {}
-        
+
         pcall(function()
             type = Library.Directory.Pets[item]
         end)
 
-        if amount == nil then
-            amount = 1
-        end
-
+        amount = amount or 1
         local price = gems / amount
 
         if type.exclusiveLevel and price <= 10000 and item ~= "Banana" and item ~= "Coin" then
@@ -185,7 +156,7 @@ local function main()
             if boughtPet == true then
                 ping = true
             end
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
         elseif type.titanic and price <= 10000000 then
             local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
             if boughtPet == true then
@@ -194,7 +165,7 @@ local function main()
             processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
         elseif gems == 1 and snipeNormalPets == true then
             local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
+            processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
         end
     end
 
@@ -203,26 +174,24 @@ local function main()
         local playerIDSuccess, playerError = pcall(function()
             playerID = message['PlayerID']
         end)
-        
-        if playerIDSuccess then
-            if type(message) == "table" then
-                local listing = message["Listings"]
-                for key, value in pairs(listing) do
-                    if type(value) == "table" then
-                        local uid = key
-                        local gems = value["DiamondCost"]
-                        local itemdata = value["ItemData"]
 
-                        if itemdata then
-                            local data = itemdata["data"]
+        if playerIDSuccess and type(message) == "table" then
+            local listing = message["Listings"]
+            for key, value in pairs(listing) do
+                if type(value) == "table" then
+                    local uid = key
+                    local gems = value["DiamondCost"]
+                    local itemdata = value["ItemData"]
 
-                            if data then
-                                local item = data["id"]
-                                local version = data["pt"]
-                                local shiny = data["sh"]
-                                local amount = data["_am"]
-                                checklisting(uid, gems, item, version, shiny, amount, username, playerID)
-                            end
+                    if itemdata then
+                        local data = itemdata["data"]
+
+                        if data then
+                            local item = data["id"]
+                            local version = data["pt"]
+                            local shiny = data["sh"]
+                            local amount = data["_am"]
+                            checklisting(uid, gems, item, version, shiny, amount, username, playerID)
                         end
                     end
                 end
@@ -231,9 +200,9 @@ local function main()
     end
 
     local function idleHandler()
-        vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+        vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
         task.wait(1)
-        vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+        vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     end
 
     local function handlePlayerAdded(player)
