@@ -53,9 +53,6 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         else
 	    webContent = ""
 	end
-	if normalwebhook then
-	    weburl = normalwebhook
-	end
     else
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
