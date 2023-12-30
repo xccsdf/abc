@@ -71,53 +71,55 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. item .. "**"
     
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-                ["author"] = {
-                    ["name"] = "Reimu 🤑",
-                    ["icon_url"] =
-                        "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
-                },
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = "Touhou Sniper: " .. DateTime.now():ToIsoDate(),
-                ['fields'] = {
-                    ['name'] = "*PURCHASE INFO:*",
-                    ['value'] = "\n\n",
-                },
-                {
-                    ['name'] = "PRICE:",
-                    ['value'] = tostring(gems) .. " GEMS 🤑",
-                },
-                {
-                    ['name'] = "AMOUNT:",
-                    ['value'] = tostring(amount),
-                },
-                {
-                    ['name'] = "BOUGHT FROM:",
-                    ['value'] = "||" .. tostring(boughtFrom) .. "|| 🤡",
-                },
-                {
-                    ['name'] = "PETID:",
-                    ['value'] = "||" .. tostring(uid) .. "|| 🦛 \n\n",
-                },
-                {
-                    ['name'] = "*USER INFO:*",
-                    ['value'] = "\n\n",
-                },
-                {
-                    ['name'] = "USER:",
-                    ['value'] = "||" .. tostring(username) .. "||",
-                },
-                {
-                    ['name'] = "GEMS LEFT:",
-                    ['value'] = tostring(gemamount) .. " 🤑",
-                },
+local message1 = {
+    ['content'] = webContent,
+    ['embeds'] = {
+        {
+            ["author"] = {
+                ["name"] = "Reimu 🤑",
+                ["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
-        },
+            ['title'] = snipeMessage,
+            ["color"] = webcolor,
+            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ['fields'] = {
+                ['name'] = "*PURCHASE INFO:*",
+                ['value'] = "\n\n",
+            },
+            {
+                ['name'] = "PRICE:",
+                ['value'] = tostring(gems) .. " GEMS 🤑",
+            },
+            {
+                ['name'] = "AMOUNT:",
+                ['value'] = tostring(amount),
+            },
+            {
+                ['name'] = "BOUGHT FROM:",
+                ['value'] = "||" .. tostring(boughtFrom) .. "|| 🤡",
+            },
+            {
+                ['name'] = "PETID:",
+                ['value'] = "||" .. tostring(uid) .. "|| 🦛 \n\n",
+            },
+            {
+                ['name'] = "*USER INFO:*",
+                ['value'] = "\n\n",
+            },
+            {
+                ['name'] = "USER:",
+                ['value'] = "||" .. tostring(username) .. "||",
+            },
+            {
+                ['name'] = "GEMS LEFT:",
+                ['value'] = tostring(gemamount) .. " 🤑",
+            },
+            	["footer"] = {
+                ["text"] = "Touhou Sniper: "
+            }
+        }
     }
+}
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
