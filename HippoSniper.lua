@@ -32,7 +32,7 @@ end
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage = " Hippo sniped you a "
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     if version then
         if version == 2 then
@@ -41,20 +41,13 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
             version = "Golden"
         end
     else
-       version = "Normal"
+       version = ""
     end
-    
-    snipeMessage = snipeMessage .. version
-    
-    if shiny then
-        snipeMessage = snipeMessage .. " Shiny"
-    end
-    
-    snipeMessage = snipeMessage .. " " .. (item)
 
     if boughtStatus then
 	webcolor = tonumber(0x33dd99)
 	weburl = webhook
+        snipeMessage = snipeMessage .. " just sniped a "
 	if mention then 
             webContent = "<@".. userid ..">"
         else
@@ -66,7 +59,16 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     else
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
+	snipeMessage = snipeMessage .. " failed to snipe a "
     end
+    
+    snipeMessage = snipeMessage .. "**" .. version
+    
+    if shiny then
+        snipeMessage = snipeMessage .. " Shiny "
+    end
+    
+    snipeMessage = snipeMessage .. item .. "**"
     
     local message1 = {
         ['content'] = webContent,
