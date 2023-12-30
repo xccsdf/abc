@@ -82,7 +82,7 @@ local message1 = {
             },
             ['title'] = snipeMessage,
             ["color"] = webcolor,
-            ["timestamp"] = DateTime.now():ToIsoDate(),
+            ["timestamp"] = "Touhou Sniper: " .. DateTime.now():ToIsoDate(),
             ['fields'] = {
                 {
                     ['name'] = "*PURCHASE INFO:*",
