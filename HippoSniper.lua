@@ -77,24 +77,36 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ["timestamp"] = DateTime.now():ToIsoDate(),
                 ['fields'] = {
                     {
-                        ['name'] = "__Price:__",
-                        ['value'] = tostring(gems),
+                        ['name'] = "*PURCHASE INFO:*",
+                        ['value'] = "\n\n",
                     },
                     {
-                        ['name'] = "__Bought from:__",
-                        ['value'] = "||"..tostring(boughtFrom).."||",
+                        ['name'] = "PRICE:",
+                        ['value'] = tostring(gems) .. " GEMS",
                     },
                     {
-                        ['name'] = "__Amount:__",
+                        ['name'] = "AMOUNT:",
                         ['value'] = tostring(amount),
                     },
                     {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = tostring(gemamount),
+                        ['name'] = "BOUGHT FROM:",
+                        ['value'] = "||" .. tostring(boughtFrom) .. "||",
                     },      
                     {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
+                        ['name'] = "PETID:",
+                        ['value'] = "||" .. tostring(uid) .. "|| \n\n",
+                    },      
+                    {
+                        ['name'] = "*USER INFO:*",
+                        ['value'] = "\n\n",
+                    },
+                    {
+                        ['name'] = "USER:",
+                        ['value'] = "||" .. game.Players.LocalPlayer.Name .. "||",
+                    },
+                    {
+                        ['name'] = "GEMS:",
+                        ['value'] = tostring(gemamount),
                     },
                 },
             },
