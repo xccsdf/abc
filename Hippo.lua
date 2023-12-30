@@ -5,6 +5,7 @@ getgenv().alts = {"Badlandschunks", "Birb_Snek", "FJB_3", "Gooner1a", "Gooner1b"
 repeat wait() until game:IsLoaded()
 if game.PlaceId == 15502339080 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/HippoSniper.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/Hopper.lua"))()
 end
