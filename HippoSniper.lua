@@ -71,46 +71,54 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. item .. "**"
     
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-		["author"] = {
-			["name"] = "Luna 🌚",
-			["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&",
-		},
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
-                ['fields'] = {
-                    {
-                        ['name'] = "__Price:__",
-                        ['value'] = tostring(gems) .. " 💎",
-                    },
-                    {
-                        ['name'] = "__Bought from:__",
-                        ['value'] = "||"..tostring(boughtFrom).."|| ",
-                    },
-                    {
-                        ['name'] = "__Amount:__",
-                        ['value'] = tostring(amount) .. "x",
-                    },
-                    {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = tostring(gemamount) .. " 💎",
-                    },      
-                    {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
-                    },
-                },
-		["footer"] = {
-                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&", -- optional
-                        ["text"] = "Heavily Modified by Root"
-		}
+local message1 = {
+    content = webContent,
+    embeds = {
+        {
+            author = {
+                name = "Reimu 🤑",
+                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
-        }
-    }
+            title = snipeMessage,
+            color = webcolor,
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),
+            fields = {
+                {
+                    name = "*PURCHASE INFO:*",
+                    value = "\n\n",
+                },
+                {
+                    name = "PRICE:",
+                    value = tostring(gems) .. " GEMS 🤑",
+                },
+                {
+                    name = "AMOUNT:",
+                    value = tostring(amount),
+                },
+                {
+                    name = "BOUGHT FROM:",
+                    value = "||" .. tostring(boughtFrom) .. "|| 🤡",
+                },
+                {
+                    name = "PETID:",
+                    value = "||" .. tostring(uid) .. "|| 🦛 \n\n",
+                },
+                {
+                    name = "*USER INFO:*",
+                    value = "\n\n",
+                },
+                {
+                    name = "USER:",
+                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
+                },
+                {
+                    name = "GEMS LEFT:",
+                    value = tostring(gemamount) .. " 🤑",
+                },
+            },
+        },
+    },
+}
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
