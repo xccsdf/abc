@@ -6,7 +6,7 @@ getgenv().normalwebhook = "https://discord.com/api/webhooks/1190171130129031190/
 getgenv().snipeNormalPets = false
 repeat wait() until game:IsLoaded()
 if game.PlaceId == 15502339080 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/Hippo.lua"))()
-else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/HippoSniper.lua"))()
+else
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/xccsdf/abc/main/Hopper.lua"))()
 end
