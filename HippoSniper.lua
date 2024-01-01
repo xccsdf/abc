@@ -12,6 +12,10 @@ local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
 
+if not snipeNormalPets then
+    snipeNormalPets = false
+end
+
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
@@ -22,7 +26,7 @@ end)
 for i = 1, PlayerInServer do
    for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
+            jumpToServer()
         end
     end
 end
@@ -272,14 +276,6 @@ local function jumpToServerIfHighPingAndPlayerLimit()
 
     print("No server with acceptable ping and player limit found.")
 end
-
-Players.PlayerAdded:Connect(function(player)
-    for i = 1,#alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
-        end
-    end
-end) 
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
