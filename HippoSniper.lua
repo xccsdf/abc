@@ -264,7 +264,7 @@ local function jumpToServerIfHighPingAndPlayerLimit()
     end
 
     local pingThreshold = 300 -- Change this value to your desired ping threshold
-    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
+    local playerLimitThreshold = 36 -- Change this value to your desired player limit threshold
 
     for _, server in ipairs(servers) do
         local ping = getServerPing(server.id)
