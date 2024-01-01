@@ -12,10 +12,6 @@ local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
 
-if not snipeNormalPets then
-    snipeNormalPets = false
-end
-
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
@@ -23,13 +19,11 @@ Players.LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-for i = 1, PlayerInServer do
-   for ii = 1,#alts do
-        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
-        end
+Players.PlayerAdded:Connect(function(player)
+    if isAlt(player.Name) and player.Name ~= Players.LocalPlayer.Name then
+        jumpToServerIfHighPingAndPlayerLimit()
     end
-end
+end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
@@ -263,8 +257,8 @@ local function jumpToServerIfHighPingAndPlayerLimit()
         end
     end
 
-    local pingThreshold = 300 -- Change this value to your desired ping threshold
-    local playerLimitThreshold = 36 -- Change this value to your desired player limit threshold
+    local pingThreshold = 250 -- Change this value to your desired ping threshold
+    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
 
     for _, server in ipairs(servers) do
         local ping = getServerPing(server.id)
@@ -276,14 +270,6 @@ local function jumpToServerIfHighPingAndPlayerLimit()
 
     print("No server with acceptable ping and player limit found.")
 end
-
-Players.PlayerAdded:Connect(function(player)
-    for i = 1,#alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
-        end
-    end
-end) 
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
