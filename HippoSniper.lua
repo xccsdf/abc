@@ -185,26 +185,11 @@ elseif item == "Booth Slot Voucher" and gems <= 25000 then
     game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-elseif class == "Charm" and gems <= 10000 then
-    game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
-    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
 elseif type.huge and price <= 1000000 then
     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
     if boughtPet == true then
         ping = true
     end
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
-elseif type.titanic and price <= 10000000 then
-    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    if boughtPet == true then
-        ping = true
-    end
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-elseif gems == 1 and snipeNormalPets == true then
-    local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
-end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     local playerIDSuccess, playerError = pcall(function()
