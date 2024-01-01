@@ -12,10 +12,6 @@ local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
 
-if not snipeNormalPets then
-    snipeNormalPets = false
-end
-
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
@@ -23,13 +19,11 @@ Players.LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-for i = 1, PlayerInServer do
-   for ii = 1,#alts do
-        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            jumpToServer()
-        end
+Players.PlayerAdded:Connect(function(player)
+    if isAlt(player.Name) and player.Name ~= Players.LocalPlayer.Name then
+        jumpToServerIfHighPingAndPlayerLimit()
     end
-end
+end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
