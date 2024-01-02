@@ -80,7 +80,7 @@ local message1 = {
             },
             fields = {
                 {
-                    name = "__*PURCHASE INFO:*__",
+                    name = "🛒 __*PURCHASE INFO:*__ 🛒",
                     value = "\n\n",
                 },
                 {
@@ -100,7 +100,7 @@ local message1 = {
                     value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
-                    name = "__*USER INFO:*__",
+                    name = "👥 __*USER INFO:*__ 👥",
                     value = "\n\n",
                 },
                 {
