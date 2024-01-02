@@ -85,7 +85,7 @@ local message1 = {
                 },
                 {
                     name = "🤑 PRICE:",
-                    value = tostring(gems) .. " GEM'S",
+                    value = string.format("GEM'S: %s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
                 {
                     name = "📦 AMOUNT:",
@@ -109,7 +109,7 @@ local message1 = {
                 },
                 {
                     name = "💎 GEM'S LEFT:",
-                    value = string.format("GEM'S: %s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                    value = tostring(gemamount) .. " ",
                 },
             },
             footer = {
