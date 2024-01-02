@@ -76,7 +76,7 @@ local message1 = {
             color = webcolor,
             timestamp = DateTime.now():ToIsoDate(),
             thumbnail = {
-                url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191840941699514550/ezgif-5-603de3d74d.gif?ex=65a6e75f&is=6594725f&hm=7eb6d7e727339bbfae14a235420de725d2f12061b74953fd2390c6964d73b45c&",
+                url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&",
             },
             fields = {
                 {
