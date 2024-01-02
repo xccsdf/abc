@@ -85,7 +85,7 @@ local message1 = {
                 },
                 {
                     name = "🤑 PRICE:",
-                    value = string.format("GEM'S: %s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                    value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
                 {
                     name = "📦 AMOUNT:",
