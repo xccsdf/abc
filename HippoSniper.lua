@@ -27,20 +27,25 @@ for i = 1, PlayerInServer do
     end
 end
 
-local backgroundFrame = Instance.new("Frame")
-backgroundFrame.Parent = PlayerGui
-backgroundFrame.Size = UDim2.new(1, 0, 1, 0)
-backgroundFrame.Position = UDim2.new(0, 0, 0, 0)
+local part = Instance.new("Part")
+part.Size = Vector3.new(1, 1, 1)
+part.Transparency = 1 -- Make the part transparent
+part.Anchored = true
+part.CanCollide = false
+part.Parent = workspace
+
+-- Create SurfaceGui
+local surfaceGui = Instance.new("SurfaceGui")
+surfaceGui.Parent = part
+surfaceGui.Face = Enum.NormalId.Back -- Display on the back face of the part
 
 -- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
 local gifURL = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&"
 
--- Set the Image property of the Frame to the GIF URL
-local background = Instance.new("ImageLabel")
-background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, 0, 0)
-background.Image = gifURL
-background.Parent = backgroundFrame
+-- Create Decal on SurfaceGui
+local decal = Instance.new("Decal")
+decal.Texture = gifURL
+decal.Parent = surfaceGui
 
 -- Disable rendering
 game:GetService("RunService"):Set3dRenderingEnabled(false)
