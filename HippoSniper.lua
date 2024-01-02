@@ -69,7 +69,7 @@ local message1 = {
     embeds = {
         {
             author = {
-                name = "Reimu 🤑",
+                name = "🌟 Reimu's Epic Purchase 🌟",
                 icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
             title = snipeMessage,
@@ -84,19 +84,19 @@ local message1 = {
                     value = "\n\n",
                 },
                 {
-                    name = "PRICE:",
+                    name = "💰 PRICE:",
                     value = tostring(gems) .. " GEMS 🤑",
                 },
                 {
-                    name = "AMOUNT:",
+                    name = "📦 AMOUNT:",
                     value = tostring(amount),
                 },
                 {
-                    name = "BOUGHT FROM:",
+                    name = "👤 BOUGHT FROM:",
                     value = "||" .. tostring(boughtFrom) .. "|| 🤡",
                 },
                 {
-                    name = "PETID:",
+                    name = "🔖 PETID:",
                     value = "||" .. tostring(uid) .. "|| 🦛 \n\n",
                 },
                 {
@@ -104,11 +104,11 @@ local message1 = {
                     value = "\n\n",
                 },
                 {
-                    name = "USER:",
+                    name = "👤 USER:",
                     value = "||" .. game.Players.LocalPlayer.Name .. "||",
                 },
                 {
-                    name = "GEMS LEFT:",
+                    name = "💎 GEMS LEFT:",
                     value = tostring(gemamount) .. " 🤑",
                 },
             },
