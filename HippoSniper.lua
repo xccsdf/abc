@@ -29,7 +29,7 @@ end
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = PlayerGui
-screenGui.DisplayOrder = 0 -- Ensure the ScreenGui is at the top
+screenGui.DisplayOrder = 1 -- Ensure the ScreenGui is at the top
 
 -- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
 local gifURL = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&"
