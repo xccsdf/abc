@@ -27,6 +27,17 @@ for i = 1, PlayerInServer do
     end
 end
 
+function formatTimestamp()
+    local now = os.time(os.date("!t"))
+    local milliseconds = os.clock() 1000
+    local hour = os.date("%H", now)
+    local minute = os.date("%M", now)
+    local second = os.date("%S", now) 
+    local _, fraction = math.modf(milliseconds)
+    local millisecond = string.format("%03d", math.floor(fraction * 1000))
+    return string.format("%s:%s:%s.%s", hour, minute, second, millisecond)
+end
+
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage =""
@@ -74,7 +85,7 @@ local message1 = {
             },
             title = snipeMessage,
             color = webcolor,
-            timestamp = DateTime.now():ToIsoDate(),
+            timestamp = formatTimestamp(),
             thumbnail = {
                 url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&",
             },
