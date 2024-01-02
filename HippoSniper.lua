@@ -75,6 +75,9 @@ local message1 = {
             title = snipeMessage,
             color = webcolor,
             timestamp = DateTime.now():ToIsoDate(),
+            image = {
+                url = "https://media.discordapp.net/attachments/959258207954563162/1174748013835587584/real.gif?ex=65a01758&is=658da258&hm=dbbb879dcce05cf5c9e9d565738fb1670adea53d14b71a1b5dd97a3aaa130895&",
+            },
             fields = {
                 {
                     name = "*PURCHASE INFO:*",
