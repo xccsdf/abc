@@ -245,7 +245,7 @@ end
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     local playerIDSuccess, playerError = pcall(function()
 	playerID = message['PlayerID']
-    end)S
+    end)
     if playerIDSuccess then
         if type(message) == "table" then
             local listing = message["Listings"]
