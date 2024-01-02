@@ -27,53 +27,42 @@ for i = 1, PlayerInServer do
     end
 end
 
-local part = Instance.new("Part")
-part.Size = Vector3.new(1, 1, 1)
-part.Transparency = 1 -- Make the part transparent
-part.Anchored = true
-part.CanCollide = false
-part.Parent = workspace
+local Roact = require(game.ReplicatedStorage:WaitForChild("Roact"))
 
--- Create SurfaceGui
-local surfaceGui = Instance.new("SurfaceGui")
-surfaceGui.Parent = part
-surfaceGui.Face = Enum.NormalId.Back -- Display on the back face of the part
+-- Create a Roact component for the UI
+local MyUI = Roact.Component:extend("MyUI")
 
--- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
-local gifURL = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&"
-
--- Create Decal on SurfaceGui
-local decal = Instance.new("Decal")
-decal.Texture = gifURL
-decal.Parent = surfaceGui
-
--- Disable rendering
-game:GetService("RunService"):Set3dRenderingEnabled(false)
-
--- ... (rest of your existing code)
-
--- Create a label for displaying diamonds
-local diamondsLabel = Instance.new("TextLabel")
-diamondsLabel.Size = UDim2.new(0.5, 0, 0.2, 0)
-diamondsLabel.Position = UDim2.new(0.25, 0, 0.4, 0)
-diamondsLabel.BackgroundColor3 = Color3.new(1, 1, 1)
-diamondsLabel.TextColor3 = Color3.new(1, 0, 0)
-diamondsLabel.TextStrokeTransparency = 0.5
-diamondsLabel.Font = Enum.Font.SourceSansBold
-diamondsLabel.TextScaled = true
-diamondsLabel.Parent = PlayerGui -- Add the label directly to PlayerGui
-
--- Function to update diamonds label
-local function updateDiamondsLabel()
-    local gemamount = Player.leaderstats["💎 Diamonds"].Value
-    diamondsLabel.Text = "Diamonds: " .. tostring(gemamount)
+function MyUI:init()
+    self.state = {
+        gemAmount = 0, -- Initial value, update as needed
+    }
 end
 
--- Update the label initially
-updateDiamondsLabel()
+function MyUI:render()
+    return Roact.createElement("ScreenGui", {}, {
+        -- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
+        Roact.createElement("ImageLabel", {
+            Size = UDim2.new(1, 0, 1, 0),
+            Image = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&",
+            BackgroundTransparency = 1,
+        }),
 
--- Connect the function to leaderstats changes
-Player.leaderstats["💎 Diamonds"].Changed:Connect(updateDiamondsLabel)
+        -- Display gem amount
+        Roact.createElement("TextLabel", {
+            Size = UDim2.new(0.5, 0, 0.2, 0),
+            Position = UDim2.new(0.25, 0, 0.4, 0),
+            BackgroundColor3 = Color3.new(1, 1, 1),
+            TextColor3 = Color3.new(1, 0, 0),
+            TextStrokeTransparency = 0.5,
+            Font = Enum.Font.SourceSansBold,
+            TextScaled = true,
+            Text = "Diamonds: " .. tostring(self.state.gemAmount),
+        }),
+    })
+end
+
+-- Create a Roact tree and mount it to the player's PlayerGui
+local handle = Roact.mount(Roact.createElement(MyUI), game.Players.LocalPlayer:WaitForChild("PlayerGui"))
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
