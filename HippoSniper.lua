@@ -148,8 +148,8 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     end
 
     local price = gems / amount
-
-    if type.huge and price <= 1000000 then
+ 
+ if type.huge and price <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
             ping = true
@@ -164,6 +164,12 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     elseif item == "Titanic Christmas Present" and price <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+    elseif type.titanic and price <= 10000000 then
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        if boughtPet == true then
+            ping = true
+        end
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
     elseif item == "Chest Mimic" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
@@ -193,13 +199,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Booth Slot Voucher" and gems <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif type.titanic and price <= 10000000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        if boughtPet == true then
-            ping = true
-        end
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)  
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping) 
     end
 end
 
