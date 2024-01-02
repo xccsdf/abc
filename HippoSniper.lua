@@ -222,7 +222,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     elseif string.find(item, "Charm") and price <= 100000 and item ~= "Agility Charm" and item ~= "Coin Charm" and item ~= "Bonus Charm" and item ~= "Charm Stone" then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif string.find(item, "HoverBoard") and item == "UFO" and price <= 25000 then
+    elseif string.find(item, "Hoverboard") and item == "UFO" and price <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif string.find(item, "Booth") and price <= 25000 and item ~= "Christmas Booth" and item ~= "Dragon Booth" and item ~= "Rainbow Booth" and item ~= "Gold Booth" and item ~= "Cat Booth" and item ~= "Egg Booth" and item ~= "Monkey Booth" then
