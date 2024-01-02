@@ -178,19 +178,19 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
 
     -- Enchantment Books
-    elseif item == "Chest Mimic" then
+    elseif item == "Chest Mimic" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Diamond Chest Mimic" then
+    elseif item == "Diamond Chest Mimic" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Fortune" then
+    elseif item == "Fortune" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Lucky Block" then
+    elseif item == "Lucky Block" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Massive Comet" then
+    elseif item == "Massive Comet" and gems <= 100000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "" and price <= 20000 then
