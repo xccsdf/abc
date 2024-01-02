@@ -109,7 +109,7 @@ local message1 = {
                 },
                 {
                     name = "💎 GEM'S LEFT:",
-                    value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                    value = abbreviateNumber(gemamount),
                 },
             },
             footer = {
@@ -297,6 +297,21 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
 	end
     end
 end)
+
+function abbreviateNumber(num)
+    local numString = tostring(num)
+    local len = string.len(numString)
+
+    if len >= 10 then
+        return string.format("%.1fb", num / 1e9)
+    elseif len >= 7 then
+        return string.format("%.1fm", num / 1e6)
+    elseif len >= 4 then
+        return string.format("%.1fk", num / 1e3)
+    else
+        return numString
+    end
+end
 
 local function getServerPing(serverId)
     local pingUrl = "http://www.roblox.com/Game/PlaceLauncher.ashx?request=RequestPing&placeId=" .. game.PlaceId .. "&gameId=" .. serverId
