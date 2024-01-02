@@ -109,7 +109,7 @@ local message1 = {
                 },
                 {
                     name = "💎 GEM'S LEFT:",
-                    value = tostring(gemamount) .. " ",
+                    value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
             },
             footer = {
