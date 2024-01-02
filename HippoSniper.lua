@@ -84,20 +84,20 @@ local message1 = {
                     value = "\n\n",
                 },
                 {
-                    name = "💰 PRICE:",
-                    value = tostring(gems) .. " GEMS 🤑",
+                    name = "🤑 PRICE:",
+                    value = tostring(gems) .. " GEM",
                 },
                 {
                     name = "📦 AMOUNT:",
                     value = tostring(amount),
                 },
                 {
-                    name = "👤 BOUGHT FROM:",
-                    value = "||" .. tostring(boughtFrom) .. "|| 🤡",
+                    name = "🤡 BOUGHT FROM:",
+                    value = "||" .. tostring(boughtFrom) .. "||",
                 },
                 {
                     name = "🔖 PETID:",
-                    value = "||" .. tostring(uid) .. "|| 🦛 \n\n",
+                    value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
                     name = "*USER INFO:*",
@@ -109,7 +109,7 @@ local message1 = {
                 },
                 {
                     name = "💎 GEMS LEFT:",
-                    value = tostring(gemamount) .. " 🤑",
+                    value = tostring(gemamount) .. "",
                 },
             },
             footer = {
