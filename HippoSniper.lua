@@ -85,7 +85,7 @@ local message1 = {
                 },
                 {
                     name = "🤑 PRICE:",
-                    value = tostring(gems) .. " GEM",
+                    value = tostring(gems) .. " GEM'S",
                 },
                 {
                     name = "📦 AMOUNT:",
@@ -108,7 +108,7 @@ local message1 = {
                     value = "||" .. game.Players.LocalPlayer.Name .. "||",
                 },
                 {
-                    name = "💎 GEMS LEFT:",
+                    name = "💎 GEM'S LEFT:",
                     value = tostring(gemamount) .. "",
                 },
             },
