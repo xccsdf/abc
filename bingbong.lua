@@ -76,8 +76,8 @@ local message1 = {
     embeds = {
         {
             author = {
-                name = "Reimu 🤑",
-                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+                name = "BBC 🤑",
+                icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191623068959916104/ezgif-5-2266ab765c.jpg?ex=65a61c76&is=6593a776&hm=4142ae582c9843e10af6d68f7448d2c0223fc428d8fa36679c9f3657d88756dd&",
             },
             title = snipeMessage,
             color = webcolor,
@@ -116,7 +116,7 @@ local message1 = {
                     value = tostring(gemamount) .. " 🤑",
                 },
                 footer = {
-                    icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&", -- optional
+                    icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191623068959916104/ezgif-5-2266ab765c.jpg?ex=65a61c76&is=6593a776&hm=4142ae582c9843e10af6d68f7448d2c0223fc428d8fa36679c9f3657d88756dd&", -- optional
                     text = "Touhou Sniper"
                 }
             },
