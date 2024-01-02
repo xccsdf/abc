@@ -27,43 +27,6 @@ for i = 1, PlayerInServer do
     end
 end
 
-local Roact = require(game.ReplicatedStorage:WaitForChild("Roact"))
-
--- Create a Roact component for the UI
-local MyUI = Roact.Component:extend("MyUI")
-
-function MyUI:init()
-    self.state = {
-        gemAmount = 0, -- Initial value, update as needed
-    }
-end
-
-function MyUI:render()
-    return Roact.createElement("ScreenGui", {}, {
-        -- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
-        Roact.createElement("ImageLabel", {
-            Size = UDim2.new(1, 0, 1, 0),
-            Image = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&",
-            BackgroundTransparency = 1,
-        }),
-
-        -- Display gem amount
-        Roact.createElement("TextLabel", {
-            Size = UDim2.new(0.5, 0, 0.2, 0),
-            Position = UDim2.new(0.25, 0, 0.4, 0),
-            BackgroundColor3 = Color3.new(1, 1, 1),
-            TextColor3 = Color3.new(1, 0, 0),
-            TextStrokeTransparency = 0.5,
-            Font = Enum.Font.SourceSansBold,
-            TextScaled = true,
-            Text = "Diamonds: " .. tostring(self.state.gemAmount),
-        }),
-    })
-end
-
--- Create a Roact tree and mount it to the player's PlayerGui
-local handle = Roact.mount(Roact.createElement(MyUI), game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage =""
@@ -117,7 +80,7 @@ local message1 = {
             },
             fields = {
                 {
-                    name = "🛒 __*PURCHASE INFO:*__ 🛒",
+                    name = "__*PURCHASE INFO:*__",
                     value = "\n\n",
                 },
                 {
@@ -137,7 +100,7 @@ local message1 = {
                     value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
-                    name = "👥 __*USER INFO:*__ 👥",
+                    name = "__*USER INFO:*__",
                     value = "\n\n",
                 },
                 {
