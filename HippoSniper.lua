@@ -29,16 +29,18 @@ end
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = PlayerGui
+screenGui.DisplayOrder = 0 -- Ensure the ScreenGui is at the top
 
--- Customize background (replace "YOUR_IMAGE_URL" with your image URL)
-local imageURL = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&"
+-- Customize background (replace "YOUR_GIF_URL" with your GIF URL)
+local gifURL = "https://cdn.discordapp.com/attachments/1167165734674247870/1191867530483093524/a.gif?ex=65a70023&is=65948b23&hm=b428150bd35ca8e0669b42dc678543fb0d7ffa8307f38a8e2174a27a9d846445&"
 
-local background = Instance.new("ImageLabel")
-background.Size = UDim2.new(1, 0, 1, 0)
-background.Position = UDim2.new(0, 0, 0, 0)
-background.Image = imageURL
-background.BackgroundTransparency = 0.5  -- Adjust the transparency if needed
-background.Parent = screenGui
+-- Set the Image property of the ScreenGui to the GIF URL
+screenGui.Image = gifURL
+
+-- Disable rendering
+game:GetService("RunService"):Set3dRenderingEnabled(false)
+
+-- ... (rest of your existing code)
 
 -- Create a label for displaying diamonds
 local diamondsLabel = Instance.new("TextLabel")
@@ -49,7 +51,7 @@ diamondsLabel.TextColor3 = Color3.new(1, 0, 0)
 diamondsLabel.TextStrokeTransparency = 0.5
 diamondsLabel.Font = Enum.Font.SourceSansBold
 diamondsLabel.TextScaled = true
-diamondsLabel.Parent = background
+diamondsLabel.Parent = screenGui
 
 -- Function to update diamonds label
 local function updateDiamondsLabel()
