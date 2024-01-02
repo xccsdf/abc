@@ -29,7 +29,7 @@ end
 
 function formatTimestamp()
     local now = os.time(os.date("!t"))
-    local milliseconds = os.time() * 1000
+    local milliseconds = os.clock() * 1000
     local hour = os.date("%H", now)
     local minute = os.date("%M", now)
     local second = os.date("%S", now) 
