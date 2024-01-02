@@ -193,7 +193,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     elseif item == "Massive Comet" then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Fireworks" and price <= 20000 then
+    elseif item == "" and price <= 20000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Party Time" and price <= 40000 then
