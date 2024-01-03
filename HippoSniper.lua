@@ -136,13 +136,10 @@ local message1 = {
     end
 end
 
-local readyTimestampModule = require(readyTimestampPath)
-
--- Function to wait for ready timestamp
-local function waitForReadyTimestamp()
-    repeat
-        task.wait(0.1)  -- Adjust the interval if needed
-    until readyTimestampModule.ReadyTimestamp()
+local function ReadyToBuy()
+    if workspace.YouCannotBuyThatYet ~= workspace.ReadyTimestamp then
+        print("YouCannotBuyThatYet has not changed to ReadyTimestamp yet.")
+    end
 end
 
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
@@ -269,7 +266,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Golden Watering Can" and gems <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-	waitForReadyTimestamp()
+	ReadyToBuy()
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Exotic Treasure Flag" and gems <= 50000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
