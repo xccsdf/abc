@@ -137,8 +137,7 @@ local message1 = {
 end
 
 -- Assuming Booths Frontend is directly under StarterPlayerScripts
-local pathToBoothsFrontend = game.StarterPlayer.StarterPlayerScripts.Script.Game.TradingPlaza["Booths Frontend"]
-local BoothsFrontendScript = pathToBoothsFrontend:WaitForChild("Booths Frontend") -- Adjust the name accordingly
+local BoothsFrontendScript = game.StarterPlayer.StarterPlayerScripts.Script.Game.TradingPlaza["Booths Frontend"]
 local ReadyTimestamp = BoothsFrontendScript.ReadyTimestamp
 
 -- Now use these references in your ReadyToBuy function
