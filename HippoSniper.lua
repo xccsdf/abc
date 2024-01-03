@@ -136,10 +136,12 @@ local message1 = {
     end
 end
 
+-- Assuming Booths Frontend is directly under StarterPlayerScripts
 local pathToBoothsFrontend = game.StarterPlayer.StarterPlayerScripts.Script.Game.TradingPlaza["Booths Frontend"]
 local BoothsFrontendScript = pathToBoothsFrontend:WaitForChild("Booths Frontend") -- Adjust the name accordingly
 local ReadyTimestamp = BoothsFrontendScript.ReadyTimestamp
 
+-- Now use these references in your ReadyToBuy function
 local function ReadyToBuy()
     -- Check if YouCannotBuyThatYet has changed to ReadyTimestamp
     if YouCannotBuyThatYet ~= ReadyTimestamp then
