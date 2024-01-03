@@ -304,86 +304,50 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local function jumpToServerIfHighPingAndPlayerLimit()
-    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
-
-    local success, reqResult = pcall(function()
-        local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
-        return http:JSONDecode(req.Body)
-    end)
-
-    if not success then
-        handleError(reqResult)
-        return
-    end
-
+local function jumpToServer() 
+    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
+    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
+    local body = http:JSONDecode(req.Body) 
     local deep = math.random(1, 3)
-    for i = 1, deep do
-        if reqResult.nextPageCursor then
-            local success, nextReqResult = pcall(function()
-                return http:JSONDecode(request({ Url = string.format(sfUrl .. "&cursor=" .. reqResult.nextPageCursor, 15502339080, "Desc", 100) }).Body)
-            end)
-
-            if success then
-                reqResult = nextReqResult
-            else
-                handleError(nextReqResult)
-                break
+    if deep > 1 then 
+        for i = 1, deep, 1 do 
+             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
+             body = http:JSONDecode(req.Body) 
+             task.wait(0.1)
+        end 
+    end 
+    local servers = {} 
+    if body and body.data then 
+        for i, v in next, body.data do 
+            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
+                table.insert(servers, v.id)
             end
-
-            task.wait(0.1)
-        else
-            break
         end
     end
-
-    local servers = reqResult.data or {}
-
-    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
-
-    for _, server in ipairs(servers) do
-        -- Remove the ping check for demonstration purposes
-        if server.maxPlayers >= playerLimitThreshold then
-            ts:TeleportToPlaceInstance(15502339080, server.id, Players.LocalPlayer)
-            return
-        end
+    local randomCount = #servers
+    if not randomCount then
+       randomCount = 2
     end
-
-    print("No server with acceptable player limit found.")
+    ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
-
-Players.PlayerAdded:Connect(function(player)
-    for i = 1, #alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            local success, result = pcall(jumpToServerIfHighPingAndPlayerLimit)
-            if not success then
-                handleError(result)
-            end
-        end
-    end
-end)
-
-Players.PlayerAdded:Connect(function(player)
-    for i = 1, #alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            local success, result = pcall(jumpToServerIfHighPingAndPlayerLimit)
-            if not success then
-                handleError(result)
-            end
-        end
-    end
-end)
 
 Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
-    if PlayerInServer < 1 then
-        jumpToServerIfHighPingAndPlayerLimit()
+    if PlayerInServer < 25 then
+        jumpToServer()
+    end
+end) 
+
+Players.PlayerAdded:Connect(function(player)
+    for i = 1,#alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+            jumpToServer()
+        end
     end
 end) 
 
 while task.wait(1) do
-    local success, result = pcall(jumpToServerIfHighPingAndPlayerLimit)
-    if not success then
-        handleError(result)
+    if math.floor(os.clock() - osclock) >= math.random(1800, 3600) then
+        jumpToServer()
     end
 end
