@@ -136,18 +136,24 @@ local message1 = {
     end
 end
 
--- Assuming Booths Frontend is directly under StarterPlayerScripts
-local BoothsFrontendScript = game.StarterPlayer.StarterPlayerScripts.Script.Game.TradingPlaza["Booths Frontend"]
-local ReadyTimestamp = BoothsFrontendScript.ReadyTimestamp
+local ReadyToBuy = function()
+    -- Assuming Booths Frontend is directly under StarterPlayerScripts
+    local BoothsFrontendScript = game.StarterPlayer.StarterPlayerScripts:WaitForChild("Booths Frontend") -- Adjust the name accordingly
 
--- Now use these references in your ReadyToBuy function
-local function ReadyToBuy()
+    -- Call the functions to get the current values
+    local currentYouCannotBuyThatYet = BoothsFrontendScript.YouCannotBuyThatYet()
+    local currentReadyTimestamp = BoothsFrontendScript.ReadyTimestamp()
+
     -- Check if YouCannotBuyThatYet has changed to ReadyTimestamp
-    if YouCannotBuyThatYet ~= ReadyTimestamp then
+    if currentYouCannotBuyThatYet ~= currentReadyTimestamp then
         print("YouCannotBuyThatYet has not changed to ReadyTimestamp yet.")
         -- Add any additional actions or logic here if needed
     else
         print("YouCannotBuyThatYet has changed to ReadyTimestamp.")
+        -- Add the logic you want to execute when the change occurs
+        -- For example:
+        -- local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        -- processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     end
 end
 
