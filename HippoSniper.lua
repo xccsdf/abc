@@ -221,9 +221,29 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     elseif item == "Crystal Key" and gems <= 10000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Crystal Key Lower Half" and gems <= 5000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+	
+	local StarterPlayer = game:GetService("StarterPlayer")
+	local player = game.Players.LocalPlayer
+
+-- Reference to the specific script
+	local scriptPath = "StarterPlayerScripts.Script.Game.Trading Plaza.Booths Frontend"
+	local frontendScript = player:WaitForChild(scriptPath)
+
+-- Assuming ReadyTimestamp is a function in the script
+	if frontendScript:FindFirstChild("ReadyTimestamp") then
+   	 local readyTimestamp = frontendScript:WaitForChild("ReadyTimestamp")
+
+   	 if item == "Crystal Key Lower Half" and gems <= 5000 then
+     	   if readyTimestamp() then
+       	     local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+       	     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+       	 else
+            warn("Not ready to make the purchase yet.")
+        end
+    end
+else
+    warn("ReadyTimestamp function not found.")
+end
     elseif item == "Crystal Key Upper Half" and gems <= 5000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
@@ -259,10 +279,8 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Golden Watering Can" and gems <= 25000 then
-  	if ReadyTimestamp() then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    end
     elseif item == "Exotic Treasure Flag" and gems <= 50000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
