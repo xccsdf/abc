@@ -357,7 +357,7 @@ end
 Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
-        jumpToServer()
+        jumpToServerIfHighPingAndPlayerLimit()
     end
 end) 
 
