@@ -365,7 +365,7 @@ local function jumpToServer()
         if maxPlayers >= minPlayerCount then
             ts:TeleportToPlaceInstance(15502339080, bestServerId, game:GetService("Players").LocalPlayer)
         else
-            print("Selected server doesn't meet the minimum player count requirement (min 40). Choosing another server.")
+            print("Selected server doesn't meet the minimum player count requirement. Choosing another server.")
             jumpToServer()  -- Retry server selection
         end
     else
@@ -375,13 +375,11 @@ end
 
 Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
-    if PlayerInServer < 25 then
+    if PlayerInServer < 30 then
         jumpToServer()
     end
 end) 
 
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
-        jumpToServer()
-    end
+    jumpToServer()  -- Always check the player count
 end
