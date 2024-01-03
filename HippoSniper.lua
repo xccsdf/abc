@@ -153,7 +153,6 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     local price = gems / amount
 
     wait(3)
-end
      
     -- Pets and Eggs
     if type.huge and price <= 1000000 then
