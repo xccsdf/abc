@@ -12,18 +12,17 @@ local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
 local playerID
 
-local vu = game:GetService("VirtualUser")
-Players.LocalPlayer.Idled:connect(function()
-   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-   task.wait(1)
-   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-end)
-
-for i = 1, PlayerInServer do
-   for ii = 1,#alts do
-        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
+local altCheckInterval = 300  -- Adjust the interval (in seconds)
+while task.wait(1) do
+    if math.floor(os.clock() - osclock) >= altCheckInterval then
+        for i = 1, PlayerInServer do
+            for ii = 1, #alts do
+                if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
+                    jumpToServerIfHighPingAndPlayerLimit()
+                end
+            end
         end
+        osclock = os.clock()  -- Reset the timer
     end
 end
 
@@ -173,16 +172,13 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
             ping = true
         end
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "2024 New Year's Gift" and price <= 35000 then
+    elseif item == "Crystal Key" and price <= 20000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Huge Hunter" and price <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Chest Mimic" and gems <= 1000000 then
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    elseif item == "Diamond Chest Mimic" and gems <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     end
