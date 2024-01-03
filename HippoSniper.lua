@@ -334,7 +334,7 @@ local function jumpToServer()
     local body = http:JSONDecode(req.Body)
 
     local bestServerId
-    local maxPlayers = 0
+    local maxPlayers = 49
 
     if body and body.data then
         for i, v in next, body.data do
