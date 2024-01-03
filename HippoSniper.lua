@@ -136,25 +136,6 @@ local message1 = {
     end
 end
 
-local ReadyToBuy = function()
-    -- Assuming Booths Frontend is directly under StarterPlayerScripts
-    local BoothsFrontendScript = game.StarterPlayer.StarterPlayerScripts:WaitForChild("Booths Frontend") -- Adjust the name accordingly
-
-    -- Call the functions to get the current values
-    local currentYouCannotBuyThatYet = BoothsFrontendScript.YouCannotBuyThatYet()
-    local currentReadyTimestamp = BoothsFrontendScript.ReadyTimestamp()
-
-    -- Check if YouCannotBuyThatYet has changed to ReadyTimestamp
-    if currentYouCannotBuyThatYet ~= currentReadyTimestamp then
-        print("YouCannotBuyThatYet has not changed to ReadyTimestamp yet.")
-        -- Add any additional actions or logic here if needed
-    else
-        print("YouCannotBuyThatYet has changed to ReadyTimestamp.")
-        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
-    end
-end
-
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
@@ -278,7 +259,6 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Golden Watering Can" and gems <= 25000 then
-	ReadyToBuy()
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Exotic Treasure Flag" and gems <= 50000 then
