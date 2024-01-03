@@ -329,16 +329,17 @@ end)
 
 local function jumpToServer()
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
-    local minPlayerCount = 40  -- Set your minimum player count here
+    local minPlayerCount = 30  -- Set your minimum player count here
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
     local body = http:JSONDecode(req.Body)
 
     local bestServerId
-    local maxPlayers = 49
+    local maxPlayers = 0
 
     if body and body.data then
         for i, v in next, body.data do
             if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
+                print("Found a server: ", v.playing, "/", v.maxPlayers)
                 if v.playing > maxPlayers then
                     maxPlayers = v.playing
                     bestServerId = v.id
@@ -348,6 +349,7 @@ local function jumpToServer()
     end
 
     if bestServerId then
+        print("Selected server ID: ", bestServerId)
         -- Check for alts in the selected server
         local playersInServer = game:GetService("Players"):GetPlayers()
         local alts = getgenv.alts or {}  -- Make sure getgenv.alts is defined
