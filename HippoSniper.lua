@@ -150,10 +150,8 @@ local ReadyToBuy = function()
         -- Add any additional actions or logic here if needed
     else
         print("YouCannotBuyThatYet has changed to ReadyTimestamp.")
-        -- Add the logic you want to execute when the change occurs
-        -- For example:
-        -- local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-        -- processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     end
 end
 
