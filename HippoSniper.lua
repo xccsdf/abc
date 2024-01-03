@@ -136,6 +136,15 @@ local message1 = {
     end
 end
 
+local readyTimestampModule = require(readyTimestampPath)
+
+-- Function to wait for ready timestamp
+local function waitForReadyTimestamp()
+    repeat
+        task.wait(0.1)  -- Adjust the interval if needed
+    until readyTimestampModule.ReadyTimestamp()
+end
+
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
@@ -152,8 +161,6 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
 
     local price = gems / amount
      
-    task.wait(3.05)
-
     if type.huge and price <= 1000000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
@@ -262,6 +269,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Golden Watering Can" and gems <= 25000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+	waitForReadyTimestamp()
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Exotic Treasure Flag" and gems <= 50000 then
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
