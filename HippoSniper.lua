@@ -339,7 +339,7 @@ local function jumpToServerIfHighPingAndPlayerLimit()
 
     local servers = reqResult.data or {}
 
-    local playerLimitThreshold = 30 -- Change this value to your desired player limit threshold
+    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
 
     for _, server in ipairs(servers) do
         -- Remove the ping check for demonstration purposes
