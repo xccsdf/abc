@@ -151,6 +151,9 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     end
 
     local price = gems / amount
+
+    wait(3)
+end
      
     -- Pets and Eggs
     if type.huge and price <= 1000000 then
@@ -223,11 +226,9 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Crystal Key Lower Half" and gems <= 5000 then
-    	wait(3.05)
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Crystal Key Upper Half" and gems <= 5000 then
-    	wait(3.05)
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
     elseif item == "Spinny Wheel Ticket" and gems <= 5000 then
