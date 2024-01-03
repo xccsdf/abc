@@ -76,6 +76,7 @@ local message1 = {
         {
             author = {
                 name = "🌟 Reimu's Epic Purchase 🌟",
+                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
             title = snipeMessage,
             color = webcolor,
@@ -119,6 +120,7 @@ local message1 = {
             },
             footer = {
                 text = "Touhou Sniper"
+                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&", -- optional
             }
         },
     },
