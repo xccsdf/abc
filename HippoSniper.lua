@@ -372,6 +372,13 @@ Players.PlayerAdded:Connect(function(player)
     end
 end) 
 
+Players.PlayerRemoving:Connect(function(player)
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        jumpToServerIfHighPingAndPlayerLimit()
+    end
+end) 
+
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
         jumpToServerIfHighPingAndPlayerLimit()
