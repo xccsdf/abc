@@ -327,25 +327,6 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local function getServerPing(serverId)
-    local pingUrl = "http://www.roblox.com/Game/PlaceLauncher.ashx?request=RequestPing&placeId=" .. game.PlaceId .. "&gameId=" .. serverId
-    local startTime = os.clock()
-    local success, response = pcall(function()
-        return game:GetService("HttpService"):RequestAsync({
-            Url = pingUrl,
-            Method = "GET"
-        })
-    end)
-
-    if success and response and response.Success then
-        local endTime = os.clock()
-        local ping = (endTime - startTime) * 1000 -- Convert to milliseconds
-        return ping
-    else
-        return nil
-    end
-end
-
 local function jumpToServer()
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
     local minPlayerCount = 40  -- Set your minimum player count here
@@ -396,14 +377,6 @@ Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
         jumpToServer()
-    end
-end) 
-
-Players.PlayerAdded:Connect(function(player)
-    for i = 1,#alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            jumpToServer()
-        end
     end
 end) 
 
