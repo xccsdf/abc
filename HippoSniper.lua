@@ -354,6 +354,13 @@ local function jumpToServerIfHighPingAndPlayerLimit()
     print("No server with acceptable ping and player limit found.")
 end
 
+Players.PlayerRemoving:Connect(function(player)
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        jumpToServer()
+    end
+end) 
+
 Players.PlayerAdded:Connect(function(player)
     for i = 1,#alts do
         if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
