@@ -136,9 +136,17 @@ local message1 = {
     end
 end
 
+local pathToBoothsFrontend = game.StarterPlayer.StarterPlayerScripts.Script.Game.TradingPlaza["Booths Frontend"]
+local BoothsFrontendScript = pathToBoothsFrontend:WaitForChild("Booths Frontend") -- Adjust the name accordingly
+local ReadyTimestamp = BoothsFrontendScript.ReadyTimestamp
+
 local function ReadyToBuy()
-    if workspace.YouCannotBuyThatYet ~= workspace.ReadyTimestamp then
+    -- Check if YouCannotBuyThatYet has changed to ReadyTimestamp
+    if YouCannotBuyThatYet ~= ReadyTimestamp then
         print("YouCannotBuyThatYet has not changed to ReadyTimestamp yet.")
+        -- Add any additional actions or logic here if needed
+    else
+        print("YouCannotBuyThatYet has changed to ReadyTimestamp.")
     end
 end
 
