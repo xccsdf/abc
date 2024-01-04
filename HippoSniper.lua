@@ -137,7 +137,7 @@ local message1 = {
     end
 end
 
-local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention, failMessage)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
     gems = tonumber(gems)
