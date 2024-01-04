@@ -72,7 +72,7 @@ local message1 = {
     embeds = {
         {
             author = {
-                name = ":star2: Reimu's Epic Purchase :star2:",
+                name = "🌟 Reimu's Epic Purchase 🌟",
                 icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
             title = snipeMessage,
@@ -83,41 +83,41 @@ local message1 = {
             },
             fields = {
                 {
-                    name = ":shopping_cart: __*PURCHASE INFO:*__ :shopping_cart:",
+                    name = "🛒 __*PURCHASE INFO:*__ 🛒",
                     value = "\n\n",
                 },
                 {
-                    name = ":money_mouth: PRICE:",
-                    value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                    name = "🤑 PRICE:",
+                    value = string.format("GEM'S: %s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
                 {
-                    name = ":package: AMOUNT:",
-            value = tostring(amount),
+                    name = "📦 AMOUNT:",
+                    value = tostring(amount),
                 },
                 {
-                    name = ":clown: BOUGHT FROM:",
+                    name = "🤡 BOUGHT FROM:",
                     value = "||" .. tostring(boughtFrom) .. "||",
                 },
                 {
-                    name = ":bookmark: PETID:",
+                    name = "🔖 PETID:",
                     value = "||" .. tostring(uid) .. "|| \n\n",
                 },
                 {
-                    name = ":busts_in_silhouette: __*USER INFO:*__ :busts_in_silhouette:",
+                    name = "👥 __*USER INFO:*__ 👥",
                     value = "\n\n",
                 },
                 {
-                    name = ":bust_in_silhouette: USER:",
+                    name = "👤 USER:",
                     value = "||" .. game.Players.LocalPlayer.Name .. "||",
                 },
                 {
-                    name = ":gem: GEM'S LEFT:",
+                    name = "💎 GEM'S LEFT:",
                     value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
                 },
             },
             footer = {
-                text = "Touhou Sniper",
                 icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&", -- optional
+                text = "Touhou Sniper"
             }
         },
     },
