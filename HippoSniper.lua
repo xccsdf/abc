@@ -137,7 +137,7 @@ local message1 = {
     end
 end
 
-local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
+local function processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
     gems = tonumber(gems)
@@ -409,5 +409,4 @@ while task.wait(1) do
     if math.floor(os.clock() - osclock) >= math.random(1800, 3600) then
         jumpToServer()
     end
-end
 end
