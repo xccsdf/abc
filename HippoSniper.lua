@@ -151,12 +151,12 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     local price = gems / amount
 
 -- Pets and Eggs
-      if type.huge and price <= 1000000 then
+    if type.huge and price <= 1000000 then
         task.wait(3.05)
-	local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
+        local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
         if boughtPet == true then
             ping = true
-	end
+        end
         processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)  
         return
     elseif type.exclusiveLevel and price <= 10000 and item ~= "Banana" and item ~= "Coin" then
