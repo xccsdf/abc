@@ -190,15 +190,15 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
     elseif item == "Exotic Pet" and price <= 25000 then
 	task.wait(3.05)
     	local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)
     elseif item == "Party Time" and price <= 45000 then
 	task.wait(3.05)
     	local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)
     elseif item == "Shiny Hunter" and price <= 100000 then
 	task.wait(3.05)
     	local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
-    	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping)
+	processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)
     elseif item == "Fortune" and gems <= 100000 then
 	task.wait(3.05)
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
