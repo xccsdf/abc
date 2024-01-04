@@ -137,7 +137,7 @@ local message1 = {
     end
 end
 
-local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention, failMessage)
+local function checklisting(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention, failMessage)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
     gems = tonumber(gems)
@@ -327,11 +327,12 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
 end
 
+local f = coroutine.wrap(checklisting)
+
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     local playerIDSuccess, playerError = pcall(function()
-        playerID = message['PlayerID']
+	playerID = message['PlayerID']
     end)
-
     if playerIDSuccess then
         if type(message) == "table" then
             local listing = message["Listings"]
@@ -349,15 +350,12 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                             local version = data["pt"]
                             local shiny = data["sh"]
                             local amount = data["_am"]
-
-                            local wrappedFunction = coroutine.wrap(processListing)
-
-                            wrappedFunction(uid, gems, item, version, shiny, amount, username, playerID)
+                            f(uid, gems, item, version, shiny, amount, username, playerID)
                         end
                     end
                 end
             end
-        end
+	end
     end
 end)
 
@@ -406,7 +404,9 @@ Players.PlayerAdded:Connect(function(player)
 end)
 
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= math.random(1800, 3600) then
-        jumpToServer()
+    if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
+        while task.wait(1) do
+	    jumpToServer()		
+	end	
     end
 end
