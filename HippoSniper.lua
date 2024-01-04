@@ -36,16 +36,15 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
 	
     if boughtStatus then
-	webcolor = tonumber(0x00ff00)
-	weburl = webhook
-        snipeMessage = snipeMessage .. " just sniped a "
-        webContent = mention
-	end
+    	   webcolor = tonumber(0x00ff00)
+    	   weburl = webhook
+    	   snipeMessage = snipeMessage .. " just sniped a "
+    	   webContent = mention
     else
-	webContent = failMessage
-	webcolor = tonumber(0xff0000)
-	weburl = webhookFail
-	snipeMessage = snipeMessage .. " failed to snipe a "
+    	   webContent = failMessage
+    	   webcolor = tonumber(0xff0000)
+    	   weburl = webhookFail
+    	   snipeMessage = snipeMessage .. " failed to snipe a "
 	end
     end
     
