@@ -67,47 +67,61 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     
     snipeMessage = snipeMessage .. item .. "**"
     
-    local message1 = {
-        ['content'] = webContent,
-        ['embeds'] = {
-            {
-		["author"] = {
-			["name"] = "Luna 🌚",
-			["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&",
-		},
-                ['title'] = snipeMessage,
-                ["color"] = webcolor,
-                ["timestamp"] = DateTime.now():ToIsoDate(),
-                ['fields'] = {
-                    {
-                        ['name'] = "__Price:__",
-                        ['value'] = tostring(gems) .. " 💎",
-                    },
-                    {
-                        ['name'] = "__Bought from:__",
-                        ['value'] = "||"..tostring(boughtFrom).."|| ",
-                    },
-                    {
-                        ['name'] = "__Amount:__",
-                        ['value'] = tostring(amount) .. "x",
-                    },
-                    {
-                        ['name'] = "__Remaining gems:__",
-                        ['value'] = tostring(gemamount) .. " 💎",
-                    },      
-                    {
-                        ['name'] = "__PetID:__",
-                        ['value'] = "||"..tostring(uid).."||",
-                    },
-                },
-		["footer"] = {
-                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&", -- optional
-                        ["text"] = "Heavily Modified by Root"
-		}
+local message1 = {
+    content = webContent,
+    embeds = {
+        {
+            author = {
+                name = ":star2: Reimu's Epic Purchase :star2:",
+                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
             },
-        }
-    }
-
+            title = snipeMessage,
+            color = webcolor,
+            timestamp = DateTime.now():ToIsoDate(),
+            thumbnail = {
+                url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191840941699514550/ezgif-5-603de3d74d.gif?ex=65a6e75f&is=6594725f&hm=7eb6d7e727339bbfae14a235420de725d2f12061b74953fd2390c6964d73b45c&",
+            },
+            fields = {
+                {
+                    name = ":shopping_cart: __*PURCHASE INFO:*__ :shopping_cart:",
+                    value = "\n\n",
+                },
+                {
+                    name = ":money_mouth: PRICE:",
+                    value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },
+                {
+                    name = ":package: AMOUNT:",
+            value = tostring(amount),
+                },
+                {
+                    name = ":clown: BOUGHT FROM:",
+                    value = "||" .. tostring(boughtFrom) .. "||",
+                },
+                {
+                    name = ":bookmark: PETID:",
+                    value = "||" .. tostring(uid) .. "|| \n\n",
+                },
+                {
+                    name = ":busts_in_silhouette: __*USER INFO:*__ :busts_in_silhouette:",
+                    value = "\n\n",
+                },
+                {
+                    name = ":bust_in_silhouette: USER:",
+                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
+                },
+                {
+                    name = ":gem: GEM'S LEFT:",
+                    value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                },
+            },
+            footer = {
+                text = "Touhou Sniper",
+                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&", -- optional
+            }
+        },
+    },
+}
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
 	http:PostAsync(weburl, jsonMessage)
