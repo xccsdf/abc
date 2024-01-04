@@ -181,10 +181,10 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 if string.find(item, "Huge") and unitGems <= 100000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
                     return
-                    elseif type.huge and unitGems <= 1000000 then
-			coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimeStamp)
-                        return
-		    end
+		elseif type.huge and unitGems <= 1000000 then
+		    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
+ 		    return
+		end
                 elseif class == "Pet" then
                     local type = Library.Directory.Pets[item]
                     if type.exclusiveLevel and unitGems <= 15000 and item ~= "Banana" and item ~= "Coin" then
@@ -193,7 +193,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                     elseif type.titanic and unitGems <= 10000000 then
 			coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimeStamp)
                         return
-
+		    end
                 -- Presents and Eggs
                 elseif class == "Egg" and unitGems <= 30000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimeStamp)
@@ -224,7 +224,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
 
                 -- Enchants    
                 elseif class == "Enchant" and unitGems <= 30000 then
-                if item == "Chest Breaker" and unitGems <= 10000000 then
+		if item == "Chest Breaker" and unitGems <= 10000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimeStamp)
                     return
                 elseif string.find(item, "Chest Mimic") and unitGems <= 1000000 then
