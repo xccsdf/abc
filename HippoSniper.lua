@@ -178,13 +178,13 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
 		snipeNormal = false
                                  
                 -- Pets
-                if string.find(item, "Huge") and unitGems <= 100000 then
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
-                    return
-		elseif type.huge and unitGems <= 1000000 then
-		    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
- 		    return
-		end
+            	if string.find(item, "Huge") and unitGems <= 100000 then
+                	coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
+                	return
+            	elseif type.huge and unitGems <= 1000000 then
+			coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimeStamp)
+                        return
+		    end
                 elseif class == "Pet" then
                     local type = Library.Directory.Pets[item]
                     if type.exclusiveLevel and unitGems <= 15000 and item ~= "Banana" and item ~= "Coin" then
@@ -322,16 +322,16 @@ end
 
 if PlayerInServer < 25 then
     while task.wait(1) do
-	jumpToServer()
+        jumpToServer()
     end
 end
 
 for i = 1, PlayerInServer do
-   for ii = 1,#alts do
+    for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
             while task.wait(1) do
-		jumpToServer()
-	    end
+                jumpToServer()
+            end
         end
     end
 end
@@ -341,18 +341,18 @@ Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
         while task.wait(1) do
-	    jumpToServer()
-	end
+            jumpToServer()
+        end
     end
 end) 
 
 Players.PlayerAdded:Connect(function(player)
     for i = 1,#alts do
         if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-	    task.wait(math.random(0, 60))
+            task.wait(math.random(0, 60))
             while task.wait(1) do
-	        jumpToServer()
-	    end
+                jumpToServer()
+            end
         end
     end
 end) 
@@ -362,7 +362,7 @@ local hopDelay = math.random(900, 1200)
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(1) do
-	    jumpToServer()		
-	end	
+            jumpToServer()      
+        end    
     end
 end
