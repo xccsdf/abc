@@ -149,21 +149,35 @@ local message1 = {
     end
 end
 
-local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
-    local Library = require(rs:WaitForChild('Library'))
-    local purchase = rs.Network.Booths_RequestPurchase
-    gems = tonumber(gems)
-    local ping = false
-    local type = {}
-    pcall(function()
-        type = Library.Directory.Pets[item]
-    end)
-
-    if amount == nil then
-        amount = 1
-    end
-
-    local price = gems / amount
+Booths_Broadcast.OnClientEvent:Connect(function(username, message)
+        if type(message) == "table" then
+            local highestTimestamp = -math.huge -- Initialize with the smallest possible number
+            local key = nil
+            local listing = nil
+            for v, value in pairs(message["Listings"] or {}) do
+                if type(value) == "table" and value["ItemData"] and value["ItemData"]["data"] then
+                    local timestamp = value["Timestamp"]
+                    if timestamp > highestTimestamp then
+                        highestTimestamp = timestamp
+                        key = v
+                        listing = value
+                    end
+                end
+            end
+            if listing then
+                local buytimestamp = listing["ReadyTimestamp"]
+                local listTimestamp = listing["Timestamp"]
+                local data = listing["ItemData"]["data"]
+                local gems = tonumber(listing["DiamondCost"])
+                local uid = key
+                local item = data["id"]
+                local version = data["pt"]
+                local shiny = data["sh"]
+                local amount = tonumber(data["_am"]) or 1
+                local playerid = message['PlayerID']
+                local class = tostring(listing["ItemData"]["class"])
+                local unitGems = gems/amount
+		snipeNormal = false
 
                 -- Pets
                     if string.find(item, "Huge") and unitGems <= 1000000 then
