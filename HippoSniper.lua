@@ -179,8 +179,8 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
                     return
                 elseif type.titanic and unitGems <= 10000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-                    return
-                    end
+       		    return
+    		end
 
                 -- Presents and Eggs
                 elseif class == "Egg" and unitGems <= 30000 then
