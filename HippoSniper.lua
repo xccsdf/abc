@@ -377,11 +377,16 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+
 local function jumpToServer() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
     local body = http:JSONDecode(req.Body) 
     local deep = math.random(1, 3)
+    
     if deep > 1 then 
         for i = 1, deep, 1 do 
              req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
@@ -389,6 +394,7 @@ local function jumpToServer()
              task.wait(0.1)
         end 
     end 
+    
     local servers = {} 
     if body and body.data then 
         for i, v in next, body.data do 
@@ -397,36 +403,49 @@ local function jumpToServer()
             end
         end
     end
+    
     local randomCount = #servers
     if not randomCount then
-       randomCount = 2
+        randomCount = 2
     end
+    
     ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
-Players.PlayerRemoving:Connect(function(player)
-    PlayerInServer = #getPlayers
-    if PlayerInServer < 25 then
-        while task.wait(1) do
-	    jumpToServer()
-	end
+local function getPlayers()
+    local playerList = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        table.insert(playerList, player.Name)
     end
-end) 
+    return playerList
+end
 
-Players.PlayerAdded:Connect(function(player)
-    for i = 1,#alts do
-        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            while task.wait(1) do
-	        jumpToServer()
-	    end
+Players.PlayerRemoving:Connect(function(player)
+    local playerCount = #getPlayers()
+    local ping = game.Players.LocalPlayer:FindFirstChild("Ping") -- assuming you have a Ping value inside each player for storing ping
+    
+    if playerCount < 25 or (ping and ping.Value and ping.Value > 350) then
+        while task.wait(1) do
+            jumpToServer()
         end
     end
-end) 
+end)
+
+Players.PlayerAdded:Connect(function(player)
+    for i = 1, #alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+            while task.wait(1) do
+                jumpToServer()
+            end
+        end
+    end
+end)
 
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
+    local osclock = os.clock()
+    if math.floor(osclock - osclock) >= math.random(900, 1200) then
         while task.wait(1) do
-	    jumpToServer()		
-	end	
+            jumpToServer()
+        end
     end
 end
