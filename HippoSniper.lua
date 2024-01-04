@@ -77,7 +77,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 },
                 title = snipeMessage,
                 color = webcolor,
-                timestamp = http:DateTimeISO(),
+                timestamp = DateTime.now():ToIsoDate(),
                 thumbnail = {
                     url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191840941699514550/ezgif-5-603de3d74d.gif?ex=65a6e75f&is=6594725f&hm=7eb6d7e727339bbfae14a235420de725d2f12061b74953fd2390c6964d73b45c&",
                 },
