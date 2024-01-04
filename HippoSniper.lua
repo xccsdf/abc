@@ -1,7 +1,7 @@
 local osclock = os.clock()
 repeat task.wait() until game:IsLoaded()
 
-setfpscap(35)
+setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
@@ -10,7 +10,11 @@ local PlayerInServer = #getPlayers
 local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
-local playerID
+local playerID, snipeNormal
+
+if not snipeNormalPets then
+    snipeNormalPets = false
+end
 
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
@@ -20,16 +24,16 @@ Players.LocalPlayer.Idled:connect(function()
 end)
 
 for i = 1, PlayerInServer do
-    for ii = 1, #alts do
+   for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
             jumpToServer()
         end
     end
-end 
+end
 
-processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, ping, boughtMessage)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention, failMessage)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage =""
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     if version then
         if version == 2 then
@@ -44,17 +48,25 @@ processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet,
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
 	weburl = webhook
-        snipeMessage = snipeMessage .. " Just sniped a "
+        snipeMessage = snipeMessage .. " just sniped a "
 	if mention then 
             webContent = "<@".. userid ..">"
         else
 	    webContent = ""
 	end
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
     else
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " Failed to snipe a "
+	snipeMessage = snipeMessage .. " failed to snipe a "
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
     end
     
     snipeMessage = snipeMessage .. "**" .. version
@@ -65,61 +77,46 @@ processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet,
     
     snipeMessage = snipeMessage .. item .. "**"
     
-local message1 = {
-    content = webContent,
-    embeds = {
-        {
-            author = {
-                name = "🌟 Reimu's Epic Purchase 🌟",
-                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&",
+    local message1 = {
+        ['content'] = webContent,
+        ['embeds'] = {
+            {
+		["author"] = {
+			["name"] = "Luna 🌚",
+			["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&",
+		},
+                ['title'] = snipeMessage,
+                ["color"] = webcolor,
+                ["timestamp"] = DateTime.now():ToIsoDate(),
+                ['fields'] = {
+                    {
+                        ['name'] = "__Price:__",
+                        ['value'] = tostring(gems) .. " 💎",
+                    },
+                    {
+                        ['name'] = "__Bought from:__",
+                        ['value'] = "||"..tostring(boughtFrom).."|| ",
+                    },
+                    {
+                        ['name'] = "__Amount:__",
+                        ['value'] = tostring(amount) .. "x",
+                    },
+                    {
+                        ['name'] = "__Remaining gems:__",
+                        ['value'] = tostring(gemamount) .. " 💎",
+                    },      
+                    {
+                        ['name'] = "__PetID:__",
+                        ['value'] = "||"..tostring(uid).."||",
+                    },
+                },
+		["footer"] = {
+                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1149218291957637132/1190527382583525416/new-moon-face_1f31a.png?ex=65a22006&is=658fab06&hm=55f8900eef039709c8e57c96702f8fb7df520333ec6510a81c31fc746193fbf2&", -- optional
+                        ["text"] = "Heavily Modified by Root"
+		}
             },
-            title = snipeMessage,
-            color = webcolor,
-            timestamp = DateTime.now():ToIsoDate(),
-            thumbnail = {
-                url = "https://cdn.discordapp.com/attachments/1167165734674247870/1191840941699514550/ezgif-5-603de3d74d.gif?ex=65a6e75f&is=6594725f&hm=7eb6d7e727339bbfae14a235420de725d2f12061b74953fd2390c6964d73b45c&",
-            },
-            fields = {
-                {
-                    name = "🛒 __*PURCHASE INFO:*__ 🛒",
-                    value = "\n\n",
-                },
-                {
-                    name = "🤑 PRICE:",
-                    value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
-                },
-                {
-                    name = "📦 AMOUNT:",
-		    value = tostring(amount),
-                },
-                {
-                    name = "🤡 BOUGHT FROM:",
-                    value = "||" .. tostring(boughtFrom) .. "||",
-                },
-                {
-                    name = "🔖 PETID:",
-                    value = "||" .. tostring(uid) .. "|| \n\n",
-                },
-                {
-                    name = "👥 __*USER INFO:*__ 👥",
-                    value = "\n\n",
-                },
-                {
-                    name = "👤 USER:",
-                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
-                },
-                {
-                    name = "💎 GEM'S LEFT:",
-                    value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
-                },
-            },
-            footer = {
-                text = "Touhou Sniper",
-                icon_url = "https://cdn.discordapp.com/attachments/1122535236996182099/1189213923073871953/EmrJ9tNVcAIhVzB.png?ex=659d58c5&is=658ae3c5&hm=c55bc9b5323c6aa542d6a99b4e42c20a0255377566c3bc2d047f63bffce70b7e&", -- optional
-            }
-        },
-    },
-}
+        }
+    }
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
@@ -137,7 +134,7 @@ local message1 = {
     end
 end
 
-local function checklisting(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, mention, failMessage)
+local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
     local Library = require(rs:WaitForChild('Library'))
     local purchase = rs.Network.Booths_RequestPurchase
     gems = tonumber(gems)
@@ -152,7 +149,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, boughtFrom,
     end
 
     local price = gems / amount
-     
+
     if type.huge and price <= 1000000 then
 	task.wait(3.05)
         local boughtPet, boughtMessage = purchase:InvokeServer(playerid, uid)
@@ -359,49 +356,51 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local function getServerCount()
-    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
-    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
-    local body = http:JSONDecode(req.Body)
-    return body and body.totalServers or 0
-end
-
-local function jumpToServer()
-    local serverCount = getServerCount()
-
-    if serverCount >= 40 then
-        local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
-        local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
-        local body = http:JSONDecode(req.Body)
-        local servers = {}
-
-        if body and body.data then
-            for _, v in ipairs(body.data) do
-                if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                    table.insert(servers, v.id)
-                end
+local function jumpToServer() 
+    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
+    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
+    local body = http:JSONDecode(req.Body) 
+    local deep = math.random(1, 3)
+    if deep > 1 then 
+        for i = 1, deep, 1 do 
+             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
+             body = http:JSONDecode(req.Body) 
+             task.wait(0.1)
+        end 
+    end 
+    local servers = {} 
+    if body and body.data then 
+        for i, v in next, body.data do 
+            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
+                table.insert(servers, v.id)
             end
         end
-
-        local randomCount = #servers > 0 and #servers or 2
-
-        ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer)
     end
+    local randomCount = #servers
+    if not randomCount then
+       randomCount = 2
+    end
+    ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
 end
 
-Players.PlayerRemoving:Connect(function()
-    if #getPlayers() < 25 then
-        jumpToServer()
+Players.PlayerRemoving:Connect(function(player)
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        while task.wait(1) do
+	    jumpToServer()
+	end
     end
-end)
+end) 
 
 Players.PlayerAdded:Connect(function(player)
-    for _, alt in ipairs(alts) do
-        if player.Name == alt and alt ~= Players.LocalPlayer.Name then
-            jumpToServer()
+    for i = 1,#alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+            while task.wait(1) do
+	        jumpToServer()
+	    end
         end
     end
-end)
+end) 
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
