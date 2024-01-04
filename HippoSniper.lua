@@ -22,7 +22,7 @@ end)
 for i = 1, PlayerInServer do
     for ii = 1, #alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
-            jumpToServerIfHighPingAndPlayerLimit()
+            jumpToServer()
         end
     end
 end 
