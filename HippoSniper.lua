@@ -8,7 +8,7 @@ Edmond: offered tips for optimization
 local osclock = os.clock()
 repeat task.wait() until game:IsLoaded()
 
-setfpscap(35)
+setfpscap(10)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
@@ -25,7 +25,7 @@ if not snipeNormalPets then
 end
 
 local vu = game:GetService("VirtualUser")
-Players.LocalPlayer.Idled:Connect(function()
+Players.LocalPlayer.Idled:connect(function()
    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
    task.wait(1)
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
@@ -40,23 +40,23 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
 	
     if boughtStatus then
-        webcolor = tonumber(0x00ff00)
-        weburl = webhook
+	webcolor = tonumber(0x00ff00)
+	weburl = webhook
         snipeMessage = snipeMessage .. " just sniped a "
         webContent = mention
-        if snipeNormal == true then
-            weburl = normalwebhook
-            snipeNormal = false
-        end
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
     else
-        webContent = failMessage
-        webcolor = tonumber(0xff0000)
-        weburl = webhookFail
-        snipeMessage = snipeMessage .. " failed to snipe a "
-        if snipeNormal == true then
-            weburl = normalwebhook
-            snipeNormal = false
-        end
+	webContent = failMessage
+	webcolor = tonumber(0xff0000)
+	weburl = webhookFail
+	snipeMessage = snipeMessage .. " failed to snipe a "
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
     end
     
     snipeMessage = snipeMessage .. "**" .. versionStr
@@ -125,10 +125,10 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 
     local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
-        http:PostAsync(weburl, jsonMessage)
+	http:PostAsync(weburl, jsonMessage)
     end)
     if success == false then
-        local response = http:RequestAsync({
+        local response = request({
             Url = weburl,
             Method = "POST",
             Headers = {
@@ -141,42 +141,42 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if buytimestamp > listTimestamp then
-        task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
+      task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
     end
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
 end
 
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
-    if type(message) == "table" then
-        local highestTimestamp = -math.huge -- Initialize with the smallest possible number
-        local key = nil
-        local listing = nil
-        for v, value in pairs(message["Listings"] or {}) do
-            if type(value) == "table" and value["ItemData"] and value["ItemData"]["data"] then
-                local timestamp = value["Timestamp"]
-                if timestamp > highestTimestamp then
-                    highestTimestamp = timestamp
-                    key = v
-                    listing = value
+        if type(message) == "table" then
+            local highestTimestamp = -math.huge -- Initialize with the smallest possible number
+            local key = nil
+            local listing = nil
+            for v, value in pairs(message["Listings"] or {}) do
+                if type(value) == "table" and value["ItemData"] and value["ItemData"]["data"] then
+                    local timestamp = value["Timestamp"]
+                    if timestamp > highestTimestamp then
+                        highestTimestamp = timestamp
+                        key = v
+                        listing = value
+                    end
                 end
             end
-        end
-        if listing then
-            local buytimestamp = listing["ReadyTimestamp"]
-            local listTimestamp = listing["Timestamp"]
-            local data = listing["ItemData"]["data"]
-            local gems = tonumber(listing["DiamondCost"])
-            local uid = key
-            local item = data["id"]
-            local version = data["pt"]
-            local shiny = data["sh"]
-            local amount = tonumber(data["_am"]) or 1
-            local playerid = message['PlayerID']
-            local class = tostring(listing["ItemData"]["class"])
-            local unitGems = gems/amount
-            snipeNormal = false
-
+            if listing then
+                local buytimestamp = listing["ReadyTimestamp"]
+                local listTimestamp = listing["Timestamp"]
+                local data = listing["ItemData"]["data"]
+                local gems = tonumber(listing["DiamondCost"])
+                local uid = key
+                local item = data["id"]
+                local version = data["pt"]
+                local shiny = data["sh"]
+                local amount = tonumber(data["_am"]) or 1
+                local playerid = message['PlayerID']
+                local class = tostring(listing["ItemData"]["class"])
+                local unitGems = gems/amount
+		snipeNormal = false
+                                 
             -- Pets
                 if string.find(item, "Huge") and unitGems <= 100000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
@@ -326,16 +326,16 @@ end
 
 if PlayerInServer < 25 then
     while task.wait(1) do
-        jumpToServer()
+	jumpToServer()
     end
 end
 
 for i = 1, PlayerInServer do
-    for ii = 1,#alts do
+   for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
             while task.wait(1) do
-                jumpToServer()
-            end
+		jumpToServer()
+	    end
         end
     end
 end
@@ -345,18 +345,18 @@ Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
         while task.wait(1) do
-            jumpToServer()
-        end
+	    jumpToServer()
+	end
     end
 end) 
 
 Players.PlayerAdded:Connect(function(player)
     for i = 1,#alts do
         if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
-            task.wait(math.random(0, 60))
+	    task.wait(math.random(0, 60))
             while task.wait(1) do
-                jumpToServer()
-            end
+	        jumpToServer()
+	    end
         end
     end
 end) 
@@ -366,7 +366,7 @@ local hopDelay = math.random(900, 1200)
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(1) do
-            jumpToServer()      
-        end    
+	    jumpToServer()		
+	end	
     end
 end
