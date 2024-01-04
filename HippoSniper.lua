@@ -8,7 +8,7 @@ Edmond: offered tips for optimization
 local osclock = os.clock()
 repeat task.wait() until game:IsLoaded()
 
-setfpscap(10)
+setfpscap(35)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
