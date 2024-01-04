@@ -168,7 +168,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                     return
                 elseif snipeNormalPets == true and gems == 1 then
                         snipeNormal = true
-		        coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp,   snipeNormal)
+		        coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                         return
                 elseif class == "Pet" then
                     local type = Library.Directory.Pets[item]
@@ -184,7 +184,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
 		    end
 
                 -- Presents and Eggs
-                if class == "Egg" and unitGems <= 30000 then
+		elseif class == "Egg" and unitGems <= 30000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif (item == "Titanic Christmas Present" or string.find(item, "2024 New Year")) and unitGems <= 30000 then
