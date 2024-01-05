@@ -159,35 +159,36 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         },
     }
 
-local jsonMessage = http:JSONEncode(message1)
-local success, webMessage = pcall(function()
-    http:PostAsync(weburl, jsonMessage)
-end)
-
-if success then
-    local response = http:RequestAsync({
-        Url = weburl,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = jsonMessage
-    })
-else
-    local jsonMessage2 = http:JSONEncode(message2)
-    success, webMessage = pcall(function()
-        http:PostAsync(weburl, jsonMessage2)
+    local jsonMessage = http:JSONEncode(message1)
+    local success, webMessage = pcall(function()
+        http:PostAsync(weburl, jsonMessage)
     end)
 
-    if not success then
+    if success then
         local response = http:RequestAsync({
             Url = weburl,
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json"
             },
-            Body = jsonMessage2
+            Body = jsonMessage
         })
+    else
+        local jsonMessage2 = http:JSONEncode(message2)
+        success, webMessage = pcall(function()
+            http:PostAsync(weburl, jsonMessage2)
+        end)
+
+        if not success then
+            local response = http:RequestAsync({
+                Url = weburl,
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = jsonMessage2
+            })
+        end
     end
 end
 		
