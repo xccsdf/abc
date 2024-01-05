@@ -154,41 +154,31 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 footer = {
                     icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&", -- optional
                     text = "Touhou Sniper Fails"
-                }
+		}
             },
-        },
+        }
     }
 
-    local jsonMessage = http:JSONEncode(message1)
-    local success, webMessage = pcall(function()
-        http:PostAsync(weburl, jsonMessage)
+local jsonMessage = http:JSONEncode(message1)
+local success, webMessage = pcall(function()
+    http:PostAsync(weburl, jsonMessage)
+end)
+
+if not success then
+    local jsonMessage2 = http:JSONEncode(message2)
+    success, webMessage = pcall(function()
+        http:PostAsync(weburl, jsonMessage2)
     end)
 
-    if success then
+    if not success then
         local response = http:RequestAsync({
             Url = weburl,
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json"
             },
-            Body = jsonMessage
+            Body = jsonMessage2
         })
-    else
-        local jsonMessage2 = http:JSONEncode(message2)
-        success, webMessage = pcall(function()
-            http:PostAsync(weburl, jsonMessage2)
-        end)
-
-        if success false then
-            local response = http:RequestAsync({
-                Url = weburl,
-                Method = "POST",
-                Headers = {
-                    ["Content-Type"] = "application/json"
-                },
-                Body = jsonMessage2
-            })
-        end
     end
 end
 		
