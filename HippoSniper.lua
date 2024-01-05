@@ -123,61 +123,61 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         },
     }
 
-local message2 = {
-    content = webContent,
-    embeds = {
-        {
-            author = {
-                name = "😭 Reimu's Sad Fails 😭",
-                icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&",
+    local message2 = {
+        content = webContent,
+        embeds = {
+            {
+                author = {
+                    name = "😭 Reimu's Sad Fails 😭",
+                    icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&",
+                },
+                title = snipeMessage,
+                color = webcolor,
+                timestamp = DateTime.now():ToIsoDate(),
+                thumbnail = {
+                    url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192869570717941760/56837f7cb2c4629a601acb36875ee24a516ff40c.jpeg?ex=65aaa55c&is=6598305c&hm=669f1b186fcc3ba24e8d56c73d0ae3ed2eb555ffdc49d2dcd57cc98de290afbb&",
+                },
+                fields = {
+                    {
+                        name = "🛒 __*PURCHASE INFO:*__ 🛒",
+                        value = "\n\n",
+                    },
+                    {
+                        name = "😭 PRICE:",
+                        value = Library.Functions.ParseNumberSmart(gems) .. " ",
+                    },
+                    {
+                        name = "📦 AMOUNT:",
+                        value = Library.Functions.Commas(amount) .. "x",
+                    },
+                    {
+                        name = "🤡 BOUGHT FROM:",
+                        value = "||" .. tostring(boughtFrom) .. "||",
+                    },
+                    {
+                        name = "🔖 PETID:",
+                        value = "||" .. tostring(uid) .. "|| \n\n",
+                    },
+                    {
+                        name = "👥 __*USER INFO:*__ 👥",
+                        value = "\n\n",
+                    },
+                    {
+                        name = "👤 USER:",
+                        value = "||" .. game.Players.LocalPlayer.Name .. "||",
+                    },
+                    {
+                        name = "💎 GEM'S LEFT:",
+                        value = Library.Functions.ParseNumberSmart(gemamount) .. " ",
+                    },
+                },
+                footer = {
+                    icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&", -- optional
+                    text = "Touhou Sniper Fails"
+                }
             },
-            title = snipeMessage,
-            color = webcolor,
-            timestamp = DateTime.now():ToIsoDate(),
-            thumbnail = {
-                url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192869570717941760/56837f7cb2c4629a601acb36875ee24a516ff40c.jpeg?ex=65aaa55c&is=6598305c&hm=669f1b186fcc3ba24e8d56c73d0ae3ed2eb555ffdc49d2dcd57cc98de290afbb&",
-            },
-            fields = {
-                {
-                    name = "🛒 __*PURCHASE INFO:*__ 🛒",
-                    value = "\n\n",
-                },
-                {
-                    name = "😭 PRICE:",
-                    value = Library.Functions.ParseNumberSmart(gems) .. " ",
-                },
-                {
-                    name = "📦 AMOUNT:",
-                    value = Library.Functions.Commas(amount) .. "x",
-                },
-                {
-                    name = "🤡 BOUGHT FROM:",
-                    value = "||" .. tostring(boughtFrom) .. "||",
-                },
-                {
-                    name = "🔖 PETID:",
-                    value = "||" .. tostring(uid) .. "|| \n\n",
-                },
-                {
-                    name = "👥 __*USER INFO:*__ 👥",
-                    value = "\n\n",
-                },
-                {
-                    name = "👤 USER:",
-                    value = "||" .. game.Players.LocalPlayer.Name .. "||",
-                },
-                {
-                    name = "💎 GEM'S LEFT:",
-                    value = Library.Functions.ParseNumberSmart(gemamount) .. " ",
-                },
-            },
-            footer = {
-                icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&", -- optional
-                text = "Touhou Sniper Fails"
-            }
         },
-    },
-}
+    }
 
     local jsonMessage1 = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
