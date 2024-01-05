@@ -33,7 +33,7 @@ end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage =""
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
@@ -42,7 +42,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
 	weburl = webhook
-        snipeMessage = snipeMessage .. " just sniped a "
+        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
         webContent = mention
 	if snipeNormal == true then
 	    weburl = normalwebhook
@@ -52,7 +52,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " failed to snipe a "
+	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
 	if snipeNormal == true then
 	    weburl = normalwebhook
 	    snipeNormal = false
@@ -88,11 +88,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "🤑 PRICE:",
-                        value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                        value = Library.Functions.ParseNumberSmart(gems) .. " ",
                     },
                     {
                         name = "📦 AMOUNT:",
-                        value = tostring(amount),
+                        value = Library.Functions.Commas(amount) .. "x",
                     },
                     {
                         name = "🤡 BOUGHT FROM:",
@@ -112,7 +112,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "💎 GEM'S LEFT:",
-                        value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
+                        value = Library.Functions.ParseNumberSmart(gemamount) .. " ",
                     },
                 },
                 footer = {
@@ -361,7 +361,7 @@ Players.PlayerAdded:Connect(function(player)
     end
 end) 
 
-local hopDelay = math.random(900, 1200)
+local hopDelay = math.random(840, 1140)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
