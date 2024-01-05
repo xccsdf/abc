@@ -38,27 +38,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
     local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
-	
-    if boughtStatus then
-	webcolor = tonumber(0x00ff00)
-	weburl = webhook
-        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
-        webContent = mention
-	if snipeNormal == true then
-	    weburl = normalwebhook
-	    snipeNormal = false
-	end
-    else
-	webContent = failMessage
-	webcolor = tonumber(0xff0000)
-	weburl = webhookFail
-	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
-	if snipeNormal == true then
-	    weburl = normalwebhook
-	    snipeNormal = false
-	end
-    end
-    
+	    
     snipeMessage = snipeMessage .. "**" .. versionStr
     
     if shiny then
@@ -179,8 +159,13 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         },
     }
 
+local jsonMessage = http:JSONEncode(message1)
+local success, webMessage = pcall(function()
+    http:PostAsync(weburl, jsonMessage)
+end)
+
 if success then
-    local response = request({
+    local response = http:RequestAsync({
         Url = weburl,
         Method = "POST",
         Headers = {
@@ -193,6 +178,17 @@ else
     success, webMessage = pcall(function()
         http:PostAsync(weburl, jsonMessage2)
     end)
+
+    if not success then
+        local response = http:RequestAsync({
+            Url = weburl,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonMessage2
+        })
+    end
 end
 		
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
