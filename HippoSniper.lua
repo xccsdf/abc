@@ -179,7 +179,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
             http:PostAsync(weburl, jsonMessage2)
         end)
 
-        if not success then
+        if success false then
             local response = http:RequestAsync({
                 Url = weburl,
                 Method = "POST",
