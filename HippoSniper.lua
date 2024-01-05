@@ -26,9 +26,9 @@ end
 
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
-   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-   task.wait(1)
-   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    task.wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
@@ -392,11 +392,11 @@ if PlayerInServer < 25 then
 end
 
 for i = 1, PlayerInServer do
-   for ii = 1,#alts do
+    for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
             while task.wait(1) do
-		jumpToServer()
-	    end
+                jumpToServer()
+            end
         end
     end
 end
@@ -427,7 +427,7 @@ local hopDelay = math.random(840, 1140)
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(1) do
-	    jumpToServer()		
-	end	
+            jumpToServer()        
+        end    
     end
 end
