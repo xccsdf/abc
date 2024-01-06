@@ -350,6 +350,11 @@ local function checkAndHop()
     end
 end
 
+while true do
+    jumpToServer()
+    task.wait(10)  -- Wait for 10 seconds before checking servers again
+end
+
 Players.PlayerAdded:Connect(function(player)
     for _, alt in ipairs(alts) do
         if player.Name == alt and alt ~= Players.LocalPlayer.Name then
@@ -368,7 +373,7 @@ Players.PlayerRemoving:Connect(function()
 end)
 
 local osclock = os.clock()
-local hopDelay = math.random(840, 1140)
+local hopDelay = math.random(1800, 3600)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
