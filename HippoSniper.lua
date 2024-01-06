@@ -237,7 +237,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 elseif string.find(item, "Chest Mimic") and unitGems <= 1000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Huge Hunter" and unitGems <= 1000000 then
+                elseif item == "Huge Hunter" and unitGems <= 500000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Starfall" and unitGems <= 1000000 then
