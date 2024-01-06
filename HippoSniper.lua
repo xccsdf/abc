@@ -10,8 +10,6 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(30) -- i hate library loading
-
 setfpscap(10)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
