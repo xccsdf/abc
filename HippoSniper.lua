@@ -252,7 +252,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif type.huge and unitGems <= 1000000 then
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, boughtPet, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 end
 
@@ -416,7 +416,7 @@ local hopDelay = math.random(840, 1140)
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(10) do
-	    jumpToServer()		
+	    jumpToServerIfHighPingAndPlayerLimit()		
 	end	
     end
 end
