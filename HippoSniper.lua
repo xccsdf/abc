@@ -301,17 +301,33 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local Players = game:GetService("Players")
-local ts = game:GetService("TeleportService")
+local function getServerPing(serverId)
+    local pingUrl = "http://www.roblox.com/Game/PlaceLauncher.ashx?request=RequestPing&placeId=" .. game.PlaceId .. "&gameId=" .. serverId
+    local startTime = os.clock()
+    local success, response = pcall(function()
+        return game:GetService("HttpService"):RequestAsync({
+            Url = pingUrl,
+            Method = "GET"
+        })
+    end)
 
-local function getServerList()
+    if success and response and response.Success then
+        local endTime = os.clock()
+        local ping = (endTime - startTime) * 1000 -- Convert to milliseconds
+        return ping
+    else
+        return nil
+    end
+end
+
+local function jumpToServerIfHighPingAndPlayerLimit()
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
     local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
     local body = http:JSONDecode(req.Body)
+    local deep = math.random(1, 3)
 
-    local deep = math.random(1, 2)
     if deep > 1 then
-        for i = 1, deep do
+        for i = 1, deep, 1 do
             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) })
             body = http:JSONDecode(req.Body)
             task.wait(0.1)
@@ -320,64 +336,66 @@ local function getServerList()
 
     local servers = {}
     if body and body.data then
-        for _, v in ipairs(body.data) do
+        for i, v in next, body.data do
             if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                table.insert(servers, v.id)
+                table.insert(servers, v)
             end
         end
     end
 
-    return servers
+    local pingThreshold = 250 -- Change this value to your desired ping threshold
+    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
+
+    for _, server in ipairs(servers) do
+        local ping = getServerPing(server.id)
+        if ping and ping <= pingThreshold and server.maxPlayers >= playerLimitThreshold then
+            ts:TeleportToPlaceInstance(15502339080, server.id, game:GetService("Players").LocalPlayer)
+            return
+        end
+    end
+
+    print("No server with acceptable ping and player limit found.")
 end
 
-local function jumpToServer()
-    local servers = getServerList()
+if PlayerInServer < 25 then
+    while task.wait(10) do
+	jumpToServerIfHighPingAndPlayerLimit()
+    end
+end
 
-    if #servers > 0 then
-        local randomServer = servers[math.random(1, #servers)]
-        local playerPing = Players.LocalPlayer:GetNetworkPing()
-
-        if playerPing < 600 then
-            ts:TeleportToPlaceInstance(15502339080, randomServer, Players.LocalPlayer)
+for i = 1, PlayerInServer do
+   for ii = 1,#alts do
+        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
+            while task.wait(10) do
+		jumpToServerIfHighPingAndPlayerLimit()
+	    end
         end
     end
 end
 
-local function checkAndHop()
-    local playerPing = Players.LocalPlayer:GetNetworkPing()
-
-    if playerPing < 350 then
-        jumpToServer()
+Players.PlayerRemoving:Connect(function(player)
+    getPlayers = Players:GetPlayers()
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        while task.wait(10) do
+	    jumpToServerIfHighPingAndPlayerLimit()
+	end
     end
-end
-
-while true do
-    jumpToServer()
-    task.wait(10)  -- Wait for 10 seconds before checking servers again
-end
+end) 
 
 Players.PlayerAdded:Connect(function(player)
-    for _, alt in ipairs(alts) do
-        if player.Name == alt and alt ~= Players.LocalPlayer.Name then
-            task.wait(math.random(0, 60))
+    for i = 1,#alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+	    task.wait(math.random(0, 60))
             while task.wait(10) do
-                checkAndHop()
-            end
+	        jumpToServerIfHighPingAndPlayerLimit()
+	    end
         end
     end
 end)
 
-Players.PlayerRemoving:Connect(function()
-    while task.wait(10) do
-        checkAndHop()
-    end
-end)
-
-local osclock = os.clock()
-local hopDelay = math.random(1800, 3600)
-
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= hopDelay then
-        checkAndHop()
+    if math.floor(os.clock() - osclock) >= math.random(1800, 3600) then
+        jumpToServerIfHighPingAndPlayerLimit()
     end
 end
