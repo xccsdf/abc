@@ -337,7 +337,7 @@ local function jumpToServer()
         local randomServer = servers[math.random(1, #servers)]
         local playerPing = Players.LocalPlayer:GetNetworkPing()
 
-        if playerPing < 350 then
+        if playerPing < 600 then
             ts:TeleportToPlaceInstance(15502339080, randomServer, Players.LocalPlayer)
         end
     end
