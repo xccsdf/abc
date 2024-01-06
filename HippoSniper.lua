@@ -10,7 +10,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-setfpscap(30)
+task.wait(30) -- i hate library loading
+
+setfpscap(10)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -34,9 +36,9 @@ Players.LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-local function processListingInfo(uid, gems, item, version, boughtPet, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, boughtPet, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage =""
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
@@ -181,9 +183,8 @@ local function processListingInfo(uid, gems, item, version, boughtPet, shiny, am
             },
         },
     }
-
-        local messageToSend = boughtPet and message1 or message2 
-        local jsonMessage = http:JSONEncode(messageToSend)
+    local messageToSend = boughtPet and message1 or message2 
+    local jsonMessage = http:JSONEncode(messageToSend)
     local success, webMessage = pcall(function()
         http:PostAsync(webhooksnipe, jsonMessage)
     end) 
@@ -252,7 +253,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif type.huge and unitGems <= 1000000 then
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+                    coroutine.wrap(tryPurchase)(uid, gems, item, version, boughtPet, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 end
 
@@ -355,68 +356,76 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local function getServerPing(serverId)
-    local pingUrl = "http://www.roblox.com/Game/PlaceLauncher.ashx?request=RequestPing&placeId=" .. game.PlaceId .. "&gameId=" .. serverId
-    local startTime = os.clock()
-    local success, response = pcall(function()
-        return game:GetService("HttpService"):RequestAsync({
-            Url = pingUrl,
-            Method = "GET"
-        })
-    end)
-
-    if success and response and response.Success then
-        local endTime = os.clock()
-        local ping = (endTime - startTime) * 1000 -- Convert to milliseconds
-        return ping
-    else
-        return nil
-    end
-end
-
-local function jumpToServerIfHighPingAndPlayerLimit()
-    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
-    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
-    local body = http:JSONDecode(req.Body)
-    local deep = math.random(1, 3)
-
-    if deep > 1 then
-        for i = 1, deep, 1 do
-            req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) })
-            body = http:JSONDecode(req.Body)
-            task.wait(0.1)
-        end
-    end
-
-    local servers = {}
-    if body and body.data then
-        for i, v in next, body.data do
+local function jumpToServer() 
+    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
+    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
+    local body = http:JSONDecode(req.Body) 
+    local deep = math.random(1, 2)
+    if deep > 1 then 
+        for i = 1, deep, 1 do 
+             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
+             body = http:JSONDecode(req.Body) 
+             task.wait(0.1)
+        end 
+    end 
+    local servers = {} 
+    if body and body.data then 
+        for i, v in next, body.data do 
             if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                table.insert(servers, v)
+                table.insert(servers, v.id)
             end
         end
     end
+    local randomCount = #servers
+    if not randomCount then
+       randomCount = 2
+    end
+    ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
+end
 
-    local pingThreshold = 250 -- Change this value to your desired ping threshold
-    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
+if PlayerInServer < 25 then
+    while task.wait(10) do
+	jumpToServer()
+    end
+end
 
-    for _, server in ipairs(servers) do
-        local ping = getServerPing(server.id)
-        if ping and ping <= pingThreshold and server.maxPlayers >= playerLimitThreshold then
-            ts:TeleportToPlaceInstance(15502339080, server.id, game:GetService("Players").LocalPlayer)
-            return
+for i = 1, PlayerInServer do
+   for ii = 1,#alts do
+        if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
+            while task.wait(10) do
+		jumpToServer()
+	    end
         end
     end
-
-    print("No server with acceptable ping and player limit found.")
 end
+
+Players.PlayerRemoving:Connect(function(player)
+    getPlayers = Players:GetPlayers()
+    PlayerInServer = #getPlayers
+    if PlayerInServer < 25 then
+        while task.wait(10) do
+	    jumpToServer()
+	end
+    end
+end) 
+
+Players.PlayerAdded:Connect(function(player)
+    for i = 1,#alts do
+        if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
+	    task.wait(math.random(0, 60))
+            while task.wait(10) do
+	        jumpToServer()
+	    end
+        end
+    end
+end) 
 
 local hopDelay = math.random(840, 1140)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(10) do
-	    jumpToServerIfHighPingAndPlayerLimit()		
+	    jumpToServer()		
 	end	
     end
 end
