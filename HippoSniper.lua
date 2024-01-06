@@ -197,7 +197,7 @@ local function processListingInfo(uid, gems, item, version, boughtPet, shiny, am
     end
 end
 
-local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+local function tryPurchase(uid, gems, item, version, shiny, amount, boughtPet, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if buytimestamp > listTimestamp then
       task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
     end
