@@ -11,7 +11,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-setfpscap(15)
+setfpscap(30)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -92,7 +92,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "🤑 PRICE:",
-                        value = Library.Functions.ParseNumberSmart(gems) .. " ",
+                        value = value = string.format("%s", tostring(gems):reverse():gsub("%d%d%d", "%1,"):reverse()),
                     },
                     {
                         name = "📦 AMOUNT:",
@@ -116,7 +116,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         name = "💎 GEM'S LEFT:",
-                        value = Library.Functions.ParseNumberSmart(gemamount) .. " ",
+                        value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
                     },
                 },
                 footer = {
