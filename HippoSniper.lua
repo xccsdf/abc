@@ -10,7 +10,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-setfpscap(10)
+setfpscap(15)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -36,7 +36,7 @@ end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, boughtPet, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
+    local snipeMessage =""
     local weburl, webContent, webcolor
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
@@ -126,71 +126,17 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         },
     }
 
-    local message2 = {
-        content = webContent,
-        embeds = {
-            {
-                author = {
-                    name = "😭 Reimu's Sad Fails 😭",
-                    icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&",
-                },
-                title = snipeMessage,
-                color = webcolor,
-                timestamp = DateTime.now():ToIsoDate(),
-                thumbnail = {
-                    url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192869570717941760/56837f7cb2c4629a601acb36875ee24a516ff40c.jpeg?ex=65aaa55c&is=6598305c&hm=669f1b186fcc3ba24e8d56c73d0ae3ed2eb555ffdc49d2dcd57cc98de290afbb&",
-                },
-                fields = {
-                    {
-                        name = "🛒 __*PURCHASE INFO:*__ 🛒",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "😭 PRICE:",
-                        value = Library.Functions.ParseNumberSmart(gems) .. " ",
-                    },
-                    {
-                        name = "📦 AMOUNT:",
-                        value = Library.Functions.Commas(amount) .. "x",
-                    },
-                    {
-                        name = "🤡 BOUGHT FROM:",
-                        value = "||" .. tostring(boughtFrom) .. "||",
-                    },
-                    {
-                        name = "🔖 PETID:",
-                        value = "||" .. tostring(uid) .. "|| \n\n",
-                    },
-                    {
-                        name = "👥 __*USER INFO:*__ 👥",
-                        value = "\n\n",
-                    },
-                    {
-                        name = "👤 USER:",
-                        value = "||" .. game.Players.LocalPlayer.Name .. "||",
-                    },
-                    {
-                        name = "💎 GEM'S LEFT:",
-                        value = Library.Functions.ParseNumberSmart(gemamount) .. " ",
-                    },
-                },
-                footer = {
-                    icon_url = "https://cdn.discordapp.com/attachments/1167165734674247870/1192871069757997146/image.png?ex=65aaa6c1&is=659831c1&hm=4a534758835feea20460aaf22c1562b19defdeb1ec675fb589bd6ab52ba81cf3&", -- optional
-                    text = "Touhou Sniper Fails"
-                }
-            },
-        },
-    }
-    local messageToSend = boughtPet and message1 or message2 
-    local jsonMessage = http:JSONEncode(messageToSend)
+    local jsonMessage = http:JSONEncode(message1)
     local success, webMessage = pcall(function()
-        http:PostAsync(webhooksnipe, jsonMessage)
-    end) 
-        if success == false then
+	http:PostAsync(weburl, jsonMessage)
+    end)
+    if success == false then
         local response = request({
-            Url = webhooksnipe,
+            Url = weburl,
             Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
             Body = jsonMessage
         })
     end
@@ -354,36 +300,52 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     end
 end)
 
-local function jumpToServer() 
-    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
-    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
-    local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 2)
-    if deep > 1 then 
-        for i = 1, deep, 1 do 
-             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
-             body = http:JSONDecode(req.Body) 
-             task.wait(0.1)
-        end 
-    end 
-    local servers = {} 
-    if body and body.data then 
-        for i, v in next, body.data do 
+local function jumpToServerIfHighPingAndPlayerLimit()
+    local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true"
+    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) })
+    local body = http:JSONDecode(req.Body)
+    local deep = math.random(1, 3)
+
+    if deep > 1 then
+        for i = 1, deep, 1 do
+            req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) })
+            body = http:JSONDecode(req.Body)
+            task.wait(0.1)
+        end
+    end
+
+    local servers = {}
+    if body and body.data then
+        for i, v in next, body.data do
             if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
-                table.insert(servers, v.id)
+                table.insert(servers, v)
             end
         end
     end
-    local randomCount = #servers
-    if not randomCount then
-       randomCount = 2
+
+    local pingThreshold = 300 -- Change this value to your desired ping threshold
+    local playerLimitThreshold = 40 -- Change this value to your desired player limit threshold
+
+    for _, server in ipairs(servers) do
+        local ping = getServerPing(server.id)
+        if ping and ping <= pingThreshold and server.maxPlayers >= playerLimitThreshold then
+            ts:TeleportToPlaceInstance(15502339080, server.id, game:GetService("Players").LocalPlayer)
+            return
+        end
     end
-    ts:TeleportToPlaceInstance(15502339080, servers[math.random(1, randomCount)], game:GetService("Players").LocalPlayer) 
+
+    print("No server with acceptable ping and player limit found.")
 end
+
+local lastServerJumpTime = 0
+local serverJumpCooldown = 60 -- Set the cooldown time in seconds
 
 if PlayerInServer < 25 then
     while task.wait(10) do
-	jumpToServer()
+        if os.time() - lastServerJumpTime >= serverJumpCooldown then
+            jumpToServerIfHighPingAndPlayerLimit()
+            lastServerJumpTime = os.time()
+        end
     end
 end
 
@@ -391,7 +353,7 @@ for i = 1, PlayerInServer do
    for ii = 1,#alts do
         if getPlayers[i].Name == alts[ii] and alts[ii] ~= Players.LocalPlayer.Name then
             while task.wait(10) do
-		jumpToServer()
+		jumpToServerIfHighPingAndPlayerLimit()
 	    end
         end
     end
@@ -402,7 +364,7 @@ Players.PlayerRemoving:Connect(function(player)
     PlayerInServer = #getPlayers
     if PlayerInServer < 25 then
         while task.wait(10) do
-	    jumpToServer()
+	    jumpToServerIfHighPingAndPlayerLimit()
 	end
     end
 end) 
@@ -412,7 +374,7 @@ Players.PlayerAdded:Connect(function(player)
         if player.Name == alts[i] and alts[i] ~= Players.LocalPlayer.Name then
 	    task.wait(math.random(0, 60))
             while task.wait(10) do
-	        jumpToServer()
+	        jumpToServerIfHighPingAndPlayerLimit()
 	    end
         end
     end
@@ -423,7 +385,7 @@ local hopDelay = math.random(840, 1140)
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
         while task.wait(10) do
-	    jumpToServer()		
+	    jumpToServerIfHighPingAndPlayerLimit()		
 	end	
     end
 end
