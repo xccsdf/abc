@@ -3,6 +3,7 @@ Credits List
 ethereum: creating the base sniper
 chocolog: providing type.huge
 Edmond: offered tips for optimization
+LordHippo: ServerHop
 ]]--
 
 local osclock = os.clock()
