@@ -46,7 +46,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
 	weburl = webhook
-        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
+        snipeMessage = snipeMessage .. " Just sniped ".. Library.Functions.Commas(amount) .."x "
         webContent = mention
 	if snipeNormal == true then
 	    weburl = normalwebhook
