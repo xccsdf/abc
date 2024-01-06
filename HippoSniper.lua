@@ -241,7 +241,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 return
             elseif snipeNormalPets == true and gems == 1 then
                     snipeNormal = true
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp,   snipeNormal)
+                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
             elseif class == "Pet" then
                 local type = Library.Directory.Pets[item]
