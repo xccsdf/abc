@@ -6,9 +6,12 @@ Edmond: offered tips for optimization
 ]]--
 
 local osclock = os.clock()
-repeat task.wait() until game:IsLoaded()
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 
-setfpscap(35)
+setfpscap(30)
+game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 local Players = game:GetService('Players')
@@ -17,10 +20,10 @@ local PlayerInServer = #getPlayers
 local http = game:GetService("HttpService")
 local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
-local Library = require(rs:WaitForChild('Library'))
 local snipeNormal
+local Library = require(rs:WaitForChild("Library"))
 
-if not snipeNormalPets then
+if snipeNormalPets == nil then
     snipeNormalPets = false
 end
 
@@ -38,7 +41,27 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
     local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
-	    
+	
+    if boughtStatus then
+	webcolor = tonumber(0x00ff00)
+	weburl = webhook
+        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
+        webContent = mention
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
+    else
+	webContent = failMessage
+	webcolor = tonumber(0xff0000)
+	weburl = webhookFail
+	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
+	end
+    end
+    
     snipeMessage = snipeMessage .. "**" .. versionStr
     
     if shiny then
@@ -118,7 +141,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
         })
     end
 end
-		
+
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if buytimestamp > listTimestamp then
       task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
@@ -279,12 +302,12 @@ end)
 
 local function jumpToServer() 
     local sfUrl = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s&excludeFullGames=true" 
-    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 50) }) 
+    local req = request({ Url = string.format(sfUrl, 15502339080, "Desc", 100) }) 
     local body = http:JSONDecode(req.Body) 
-    local deep = math.random(1, 5)
+    local deep = math.random(1, 3)
     if deep > 1 then 
         for i = 1, deep, 1 do 
-             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 50) }) 
+             req = request({ Url = string.format(sfUrl .. "&cursor=" .. body.nextPageCursor, 15502339080, "Desc", 100) }) 
              body = http:JSONDecode(req.Body) 
              task.wait(0.1)
         end 
