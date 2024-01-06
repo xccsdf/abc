@@ -3,7 +3,7 @@ Credits List
 ethereum: creating the base sniper
 chocolog: providing type.huge
 Edmond: offered tips for optimization
-LordHippo: ServerHop
+LordHippo: :3
 ]]--
 
 local osclock = os.clock()
@@ -384,7 +384,7 @@ Players.PlayerAdded:Connect(function(player)
     end
 end) 
 
-local hopDelay = math.random(1600, 3600)
+local hopDelay = math.random(1800, 3600)
 
 while task.wait(1) do
     if math.floor(os.clock() - osclock) >= hopDelay then
