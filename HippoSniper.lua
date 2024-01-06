@@ -356,8 +356,12 @@ local function jumpToServerIfHighPingAndPlayerLimit()
     print("No server with acceptable ping and player limit found.")
 end
 
+local hopDelay = math.random(840, 1140)
+
 while task.wait(1) do
-    if math.floor(os.clock() - osclock) >= math.random(900, 1200) then
-        jumpToServerIfHighPingAndPlayerLimit()
+    if math.floor(os.clock() - osclock) >= hopDelay then
+        while task.wait(10) do
+	    jumpToServer()		
+	end	
     end
 end
