@@ -3,7 +3,6 @@ Credits List
 ethereum: creating the base sniper
 chocolog: providing type.huge
 Edmond: offered tips for optimization
-LordHippo: :3
 ]]--
 
 local osclock = os.clock()
@@ -35,7 +34,7 @@ Players.LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-local function processListingInfo(uid, gems, item, version, shiny, amount, boughtStatus, boughtPet, class, failMessage, snipeNormal)
+local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
     local snipeMessage =""
     local weburl, webContent, webcolor
@@ -56,7 +55,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
+	snipeMessage = snipeMessage .. " Failed to snipe ".. Library.Functions.Commas(amount) .."x "
 	if snipeNormal == true then
 	    weburl = normalwebhook
 	    snipeNormal = false
