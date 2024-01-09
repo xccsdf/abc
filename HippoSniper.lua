@@ -127,7 +127,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
 			name = "🚀 PING:",
-			value = Players.LocalPlayer:GetNetworkPing() .. "ms",  
+			value = math.floor(Players.LocalPlayer:GetNetworkPing() * 1000) .. "ms", 
                     },   
 		},
                 footer = {
