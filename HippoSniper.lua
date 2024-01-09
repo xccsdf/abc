@@ -124,11 +124,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 			value = "\n\n",
                     },
                     {
-			name = "⌛ STATUS",
+			name = "⌛ STATUS:",
 			value = webContent,
                     },
                     {
-			name = "🚀 PING",
+			name = "🚀 PING:",
 			value = playerPing .. "ms",       
 		},
                 footer = {
