@@ -36,32 +36,35 @@ end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage =""
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
-    local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
+    local mention = (Library.Directory.Pets[item].huge or Library.Directory.Pets[item].titanic) and "<@" .. userid .. ">" or ""
 	
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
-	weburl = webhook
-        snipeMessage = snipeMessage .. " Just sniped ".. Library.Functions.Commas(amount) .."x "
+        snipeMessage = snipeMessage .. "Just sniped ".. amount .."x "
         webContent = mention
 	if snipeNormal == true then
 	    weburl = normalwebhook
 	    snipeNormal = false
+	else
+	    weburl = webhook
 	end
     else
-	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " Failed to snipe ".. Library.Functions.Commas(amount) .."x "
+	snipeMessage = snipeMessage .. "Failed to snipe ".. amount .."x "
 	if snipeNormal == true then
-	    weburl = normalwebhook
 	    snipeNormal = false
 	end
     end
-    
+
+    if not failMessage then
+	failMessage = "Success!"
+    end
+	
     snipeMessage = snipeMessage .. "**" .. versionStr
     
     if shiny then
@@ -69,9 +72,9 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
     end
     
     snipeMessage = snipeMessage .. item .. "**"
-
+    
     local message1 = {
-        content = "",
+        content = "webContent",
         embeds = {
             {
                 author = {
@@ -123,11 +126,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
 			name = "⌛ STATUS:",
-			value = webContent,
+			value = failMessage,
                     },
                     {
 			name = "🚀 PING:",
-			value = math.floor(Players.LocalPlayer:GetNetworkPing() * 1000) .. "ms", 
+			value = math.round(Players.LocalPlayer:GetNetworkPing() * 2000) .. "ms",
                     },   
 		},
                 footer = {
