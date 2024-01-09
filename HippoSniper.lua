@@ -3,6 +3,8 @@ Credits List
 ethereum: creating the base sniper
 chocolog: providing type.huge
 Edmond: offered tips for optimization
+
+it is very recommended to fork this and made your own config
 ]]--
 
 local osclock = os.clock()
@@ -10,7 +12,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-setfpscap(20)
+task.wait(20) -- i hate library loading
+
+setfpscap(10)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
@@ -36,16 +40,16 @@ end)
 
 local function processListingInfo(uid, gems, item, version, shiny, amount, boughtFrom, boughtStatus, class, failMessage, snipeNormal)
     local gemamount = Players.LocalPlayer.leaderstats["💎 Diamonds"].Value
-    local snipeMessage =""
+    local snipeMessage ="||".. Players.LocalPlayer.Name .. "||"
     local weburl, webContent, webcolor
     local versionVal = { [1] = "Golden ", [2] = "Rainbow " }
     local versionStr = versionVal[version] or (version == nil and "")
-    local mention = (string.find(item, "Huge") or string.find(item, "Titanic")) and "<@" .. userid .. ">" or ""
+    local mention = (Library.Directory.Pets[item].huge or Library.Directory.Pets[item].titanic) and "<@" .. userid .. ">" or ""
 	
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
 	weburl = webhook
-        snipeMessage = snipeMessage .. " Just sniped ".. Library.Functions.Commas(amount) .."x "
+        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
         webContent = mention
 	if snipeNormal == true then
 	    weburl = normalwebhook
@@ -55,7 +59,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
 	weburl = webhookFail
-	snipeMessage = snipeMessage .. " Failed to snipe ".. Library.Functions.Commas(amount) .."x "
+	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
 	if snipeNormal == true then
 	    weburl = normalwebhook
 	    snipeNormal = false
@@ -144,7 +148,7 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if buytimestamp > listTimestamp then
-      task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
+	task.wait(3.4 - Players.LocalPlayer:GetNetworkPing())
     end
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
@@ -179,14 +183,14 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 local class = tostring(listing["ItemData"]["class"])
                 local unitGems = gems/amount
 		snipeNormal = false
-                                 
+				
             -- Pets
             if string.find(item, "Huge") and unitGems <= 100000 then
                 coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                 return
             elseif snipeNormalPets == true and gems == 1 then
                     snipeNormal = true
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
+                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp,   snipeNormal)
                     return
             elseif class == "Pet" then
                 local type = Library.Directory.Pets[item]
@@ -197,7 +201,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif type.huge and unitGems <= 3000000 then
-                    coroutine.wrap(tryPurchase)(uid, gems, item, version, boughtPet, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
+                    coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 end
 
@@ -225,9 +229,6 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
             elseif item == "Booth Slot Voucher" and unitGems <= 25000 then
                 coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                 return
-            elseif item == "Clan Voucher" and unitGems <= 25000 then
-                coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
-                return
             elseif string.find(item, "Charm") and unitGems <= 100000 and item ~= "Agility Charm" and item ~= "Coin Charm" and item ~= "Bonus Charm" and item ~= "Charm Stone" then
                 coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                 return
@@ -240,7 +241,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 elseif string.find(item, "Chest Mimic") and unitGems <= 1000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
-                elseif item == "Huge Hunter" and unitGems <= 500000 then
+                elseif item == "Huge Hunter" and unitGems <= 1000000 then
                     coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
                     return
                 elseif item == "Starfall" and unitGems <= 1000000 then
