@@ -1,20 +1,9 @@
---[[
-Credits List
-ethereum: creating the base sniper
-chocolog: providing type.huge
-Edmond: offered tips for optimization
-
-it is very recommended to fork this and made your own config
-]]--
-
 local osclock = os.clock()
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-task.wait(20) -- i hate library loading
-
-setfpscap(10)
+setfpscap(20)
 game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
