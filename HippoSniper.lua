@@ -120,15 +120,15 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                         value = string.format("%s", tostring(gemamount):reverse():gsub("%d%d%d", "%1,"):reverse()),
                     },
                     {
-			name = "__*SNIPER INFO*__",
+			name = "🎯 __*SNIPER INFO*__ 🎯",
 			value = "\n\n",
                     },
                     {
-			name = "Buy Status",
+			name = "⌛ STATUS",
 			value = webContent,
                     },
                     {
-			name = "Snipers Ping"
+			name = "🚀 PING"
 			value = playerPing .. "ms",       
 		},
                 footer = {
